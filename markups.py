@@ -4,10 +4,9 @@ from admin import adminMenu
 
 
 def mainMenu(is_admin: bool) -> ReplyKeyboardMarkup:
+    main_Menu = ReplyKeyboardMarkup(resize_keyboard=True)
+    btn = KeyboardButton('Добавить объявление')
+    main_Menu.add(btn)
     if is_admin:
-        return adminMenu()
-    else:
-        main_Menu = ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = KeyboardButton('Ничего')
-        main_Menu.add(btn)
-        return main_Menu
+        return adminMenu(main_Menu)
+    return main_Menu

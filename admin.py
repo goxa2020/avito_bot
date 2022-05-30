@@ -1,6 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types
 from config import Bot_name
+from loader import db
 
 
 async def admin_ref(message: types.Message):
@@ -10,11 +11,10 @@ async def admin_ref(message: types.Message):
                          f'Будь осторожен, не передовай эту ссылку неизвестным людям')
 
 
-def adminMenu():
-    admin_Menu = ReplyKeyboardMarkup(resize_keyboard=True)
+def adminMenu(keyboard):
     btn1 = KeyboardButton('Управление админами')
-    admin_Menu.add(btn1)
-    return admin_Menu
+    keyboard.add(btn1)
+    return keyboard
 
 
 def adminMenuProfile():
@@ -26,7 +26,8 @@ def adminMenuProfile():
     return admin_Menu
 
 
-def my_admins_text(user_id, admins: list):
+def my_admins_text(user_id):
+    admins = db.get_admins()
     my_adm = [admin[0] for admin in admins if admin[1] == user_id]
     my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
     if len(my_adm) > 0:
@@ -38,7 +39,8 @@ def my_admins_text(user_id, admins: list):
     return text
 
 
-def my_admins_kb(user_id, admins: list):
+def my_admins_kb(user_id):
+    admins = db.get_admins()
     my_adm = [admin[0] for admin in admins if admin[1] == user_id]
     my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
     inline_kb = InlineKeyboardMarkup()
