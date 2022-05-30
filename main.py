@@ -21,7 +21,7 @@ class OrderFood(StatesGroup):
     waiting_for_product_amount = State()
     waiting_for_product_price = State()
     waiting_for_town = State()
-    waiting_for_picture_f = State()
+    waiting_for_picture = State()
 
 
 async def start_on(_):
