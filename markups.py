@@ -10,3 +10,10 @@ def mainMenu(is_admin: bool) -> ReplyKeyboardMarkup:
     if is_admin:
         return adminMenu(main_Menu)
     return main_Menu
+
+
+def cancel():
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    btn = KeyboardButton('Отмена')
+    keyboard.add(btn)
+    return keyboard

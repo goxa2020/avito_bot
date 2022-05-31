@@ -6,6 +6,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import executor
 from admin import *
 from markups import mainMenu
+import markups
 from loader import bot, db, dp
 
 
@@ -66,8 +67,9 @@ async def callback(callback_query: types.CallbackQuery):
 
 async def ad_start(message: types.Message):
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    btn = KeyboardButton(f'{message.from_user.first_name}')
-    keyboard.add(btn)
+    btn1 = KeyboardButton(f'{message.from_user.first_name}')
+    btn2 = KeyboardButton('Отмена')
+    keyboard.add(btn1).add(btn2)
     await message.answer("Введите своё имя:", reply_markup=keyboard)
     await Add_ad.first()
 
@@ -75,30 +77,55 @@ async def ad_start(message: types.Message):
 @dp.message_handler(state=Add_ad.waiting_for_name)
 async def name_entered(message: types.Message, state: FSMContext):
     await state.update_data(name=message.text)
-    await message.answer("Введите название товара:")
+    await message.answer("Введите название товара:", reply_markup=markups.cancel())
     await Add_ad.next()
+    print(await state.get_data())
 
 
 @dp.message_handler(state=Add_ad.waiting_for_product_name)
 async def name_entered(message: types.Message, state: FSMContext):
     await state.update_data(product_name=message.text)
-    await message.answer("Введите количество:")
+    await message.answer("Введите количество:", reply_markup=markups.cancel())
     await Add_ad.next()
+    print(await state.get_data())
 
 
 @dp.message_handler(state=Add_ad.waiting_for_product_amount)
 async def name_entered(message: types.Message, state: FSMContext):
     await state.update_data(product_amount=message.text)
-    await message.answer("Введите цену:")
+    await message.answer("Введите цену:", reply_markup=markups.cancel())
     await Add_ad.next()
+    print(await state.get_data())
 
 
 @dp.message_handler(state=Add_ad.waiting_for_product_price)
 async def name_entered(message: types.Message, state: FSMContext):
     await state.update_data(product_price=message.text)
-    await message.answer("Введите свой город:")
-    # await Add_ad.next()
+    await message.answer("Введите свой город:", reply_markup=markups.cancel())
+    await Add_ad.next()
     print(await state.get_data())
+
+
+@dp.message_handler(state=Add_ad.waiting_for_town)
+async def name_entered(message: types.Message, state: FSMContext):
+    await state.update_data(town=message.text)
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    btn1 = KeyboardButton('Нет')
+    btn2 = KeyboardButton('Отмена')
+    keyboard.add(btn1).add(btn2)
+    await message.answer('Теперь ты отправь фотогравию товора, если её нет, нажми "Нет"', reply_markup=keyboard)
+    await Add_ad.next()
+    print(await state.get_data())
+
+
+@dp.message_handler(state=Add_ad.waiting_for_picture)
+async def name_entered(message: types.Message, state: FSMContext):
+    # if message.content_type == "photo":
+    print(message.content_type)
+    await state.update_data(product_picture=message.text)
+    await message.answer("Теперь ты гейний")
+    print(await state.get_data())
+    await state.finish()
 
 
 @dp.message_handler(commands=['start'])
