@@ -41,3 +41,5 @@ class Sqlighter:
     def get_admin_name(self, admin_id):
         with self.connection:
             return self.cursor.execute(f'SELECT admin_name FROM admins WHERE admin_id = {admin_id}').fetchmany(1)[0][0]
+
+# i love u
