@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -46,7 +48,10 @@ async def callback(callback_query: types.CallbackQuery):
                                     callback_query.from_user.id,
                                     callback_query.message.message_id,
                                     reply_markup=my_admins_kb(user_id))
-        await bot.send_message(del_id, 'Вас лишили прав администратора')
+        try:
+            await bot.send_message(del_id, 'Вас лишили прав администратора')
+        except Exception as e:
+            logging.info(e)
 
 
 @dp.callback_query_handler(text_contains="cancelCallDelAdm_")
@@ -64,16 +69,36 @@ async def ad_start(message: types.Message):
     btn = KeyboardButton(f'{message.from_user.first_name}')
     keyboard.add(btn)
     await message.answer("Введите своё имя:", reply_markup=keyboard)
-    await Add_ad.waiting_for_name.set()
+    await Add_ad.first()
 
 
+@dp.message_handler(state=Add_ad.waiting_for_name)
 async def name_entered(message: types.Message, state: FSMContext):
-    await state.update_data(chosen_food=message.text.lower())
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    for size in available_food_sizes:
-        keyboard.add(size)
-    await OrderFood.next()
-    await message.answer("Теперь выберите размер порции:", reply_markup=keyboard)
+    await state.update_data(name=message.text)
+    await message.answer("Введите название товара:")
+    await Add_ad.next()
+
+
+@dp.message_handler(state=Add_ad.waiting_for_product_name)
+async def name_entered(message: types.Message, state: FSMContext):
+    await state.update_data(product_name=message.text)
+    await message.answer("Введите количество:")
+    await Add_ad.next()
+
+
+@dp.message_handler(state=Add_ad.waiting_for_product_amount)
+async def name_entered(message: types.Message, state: FSMContext):
+    await state.update_data(product_amount=message.text)
+    await message.answer("Введите цену:")
+    await Add_ad.next()
+
+
+@dp.message_handler(state=Add_ad.waiting_for_product_price)
+async def name_entered(message: types.Message, state: FSMContext):
+    await state.update_data(product_price=message.text)
+    await message.answer("Введите свой город:")
+    # await Add_ad.next()
+    print(await state.get_data())
 
 
 @dp.message_handler(commands=['start'])
