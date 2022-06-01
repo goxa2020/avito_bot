@@ -17,7 +17,7 @@ def adminMenu(keyboard):
     return keyboard
 
 
-def adminMenuProfile():
+def adminMenuProfile() -> ReplyKeyboardMarkup():
     admin_Menu = ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = KeyboardButton('Добавить админа')
     btn2 = KeyboardButton('Мои админы')
@@ -39,7 +39,7 @@ def my_admins_text(user_id):
     return text
 
 
-def my_admins_kb(user_id):
+def my_admins_kb(user_id) -> InlineKeyboardMarkup():
     admins = db.get_admins()
     my_adm = [admin[0] for admin in admins if admin[1] == user_id]
     my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
@@ -51,7 +51,7 @@ def my_admins_kb(user_id):
     return inline_kb
 
 
-def accept_del_kb(admin_name, admin_id):
+def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
     inline_kb = InlineKeyboardMarkup()
     inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'acceptCallDelAdm_{admin_id}')
     inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelCallDelAdm_{admin_id}')

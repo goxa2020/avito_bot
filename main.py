@@ -1,13 +1,12 @@
 import logging
-
-from aiogram import types
-from aiogram.dispatcher import FSMContext
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils import executor
 from admin import *
-from markups import mainMenu
-import markups
+from markups import *
 from loader import bot, db, dp
+from callback_handlers import *
 
 
 class Add_ad(StatesGroup):
@@ -17,52 +16,40 @@ class Add_ad(StatesGroup):
     waiting_for_product_price = State()
     waiting_for_town = State()
     waiting_for_picture = State()
+    waiting_for_accept = State()
+
+
+ad_dict = {}
+
+
+class Ad:
+    def __init__(self, name):
+        self.name = name
+        self.product_name = None
+        self.product_amount = None
+        self.product_price = None
+        self.town = None
+        self.picture_id = None
+
+
+def register_handlers(dp: Dispatcher):
+    dp.register_message_handler(name_entered, state=Add_ad.waiting_for_name)
+    dp.register_message_handler(product_name_chosen, state=Add_ad.waiting_for_product_name)
+    dp.register_message_handler(product_amount_chosen, state=Add_ad.waiting_for_product_amount)
+    dp.register_message_handler(product_price_chosen, state=Add_ad.waiting_for_product_price)
+    dp.register_message_handler(town_chosen, state=Add_ad.waiting_for_town)
+    dp.register_message_handler(picture_chosen, state=Add_ad.waiting_for_picture, content_types=['text', 'photo'])
+    dp.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
+
+
+async def cancel(message: types.Message, state: FSMContext):
+    await state.finish()
+    is_admin = db.user_is_admin(message.from_user.id)
+    await message.answer("Действие отменено", reply_markup=mainMenu(is_admin))
 
 
 async def start_on(_):
-    pass
-
-
-@dp.callback_query_handler(text_contains="callDelAdm_")
-async def callback(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
-    del_id = callback_query.data.split("_")[1]
-    admin_name = db.get_admin_name(del_id)
-    await bot.edit_message_text(f'Точно удалить {admin_name}', callback_query.from_user.id,
-                                callback_query.message.message_id, reply_markup=accept_del_kb(admin_name, del_id))
-
-
-@dp.callback_query_handler(text_contains="acceptCallDelAdm_")
-async def callback(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
-    user_id = callback_query.from_user.id
-    del_id = callback_query.data.split("_")[1]
-    try:
-        if db.user_is_admin(del_id):
-            db.del_admin(del_id)
-    except Exception:
-        await bot.edit_message_text('Что-то не получилось', callback_query.from_user.id,
-                                    callback_query.message.message_id)
-        await bot.send_message(user_id, my_admins_text(user_id), reply_markup=my_admins_kb(user_id))
-    else:
-        await bot.edit_message_text(f'Человек успешно лишён админки \n{my_admins_text(user_id)}',
-                                    callback_query.from_user.id,
-                                    callback_query.message.message_id,
-                                    reply_markup=my_admins_kb(user_id))
-        try:
-            await bot.send_message(del_id, 'Вас лишили прав администратора')
-        except Exception as e:
-            logging.info(e)
-
-
-@dp.callback_query_handler(text_contains="cancelCallDelAdm_")
-async def callback(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
-    user_id = callback_query.from_user.id
-    await bot.edit_message_text(f'Действие отменено \n{my_admins_text(user_id)}',
-                                callback_query.from_user.id,
-                                callback_query.message.message_id,
-                                reply_markup=my_admins_kb(user_id))
+    register_handlers(dp)
 
 
 async def ad_start(message: types.Message):
@@ -74,58 +61,104 @@ async def ad_start(message: types.Message):
     await Add_ad.first()
 
 
-@dp.message_handler(state=Add_ad.waiting_for_name)
 async def name_entered(message: types.Message, state: FSMContext):
-    await state.update_data(name=message.text)
-    await message.answer("Введите название товара:", reply_markup=markups.cancel())
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    chat_id = message.from_user.id
+    name = message.text
+    ad = Ad(name)
+    ad_dict[chat_id] = ad
+    await message.answer("Введите название товара:", reply_markup=cancel_kb())
     await Add_ad.next()
-    print(await state.get_data())
 
 
-@dp.message_handler(state=Add_ad.waiting_for_product_name)
-async def name_entered(message: types.Message, state: FSMContext):
-    await state.update_data(product_name=message.text)
-    await message.answer("Введите количество:", reply_markup=markups.cancel())
+async def product_name_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    chat_id = message.from_user.id
+    product_name = message.text
+    ad = ad_dict[chat_id]
+    ad.product_name = product_name
+    await message.answer("Введите количество:", reply_markup=cancel_kb())
     await Add_ad.next()
-    print(await state.get_data())
 
 
-@dp.message_handler(state=Add_ad.waiting_for_product_amount)
-async def name_entered(message: types.Message, state: FSMContext):
-    await state.update_data(product_amount=message.text)
-    await message.answer("Введите цену:", reply_markup=markups.cancel())
+async def product_amount_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    chat_id = message.from_user.id
+    product_amount = message.text
+    ad = ad_dict[chat_id]
+    ad.product_amount = product_amount
+    await message.answer("Введите цену:", reply_markup=cancel_kb())
     await Add_ad.next()
-    print(await state.get_data())
 
 
-@dp.message_handler(state=Add_ad.waiting_for_product_price)
-async def name_entered(message: types.Message, state: FSMContext):
+async def product_price_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    chat_id = message.from_user.id
+    product_price = message.text
+    ad = ad_dict[chat_id]
+    ad.product_price = product_price
     await state.update_data(product_price=message.text)
-    await message.answer("Введите свой город:", reply_markup=markups.cancel())
+    await message.answer("Введите свой город:", reply_markup=cancel_kb())
     await Add_ad.next()
-    print(await state.get_data())
 
 
-@dp.message_handler(state=Add_ad.waiting_for_town)
-async def name_entered(message: types.Message, state: FSMContext):
+async def town_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    chat_id = message.from_user.id
+    town = message.text
+    ad = ad_dict[chat_id]
+    ad.town = town
     await state.update_data(town=message.text)
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    btn1 = KeyboardButton('Нет')
-    btn2 = KeyboardButton('Отмена')
-    keyboard.add(btn1).add(btn2)
+    keyboard.add("Нет", "Отмена")
     await message.answer('Теперь ты отправь фотогравию товора, если её нет, нажми "Нет"', reply_markup=keyboard)
     await Add_ad.next()
-    print(await state.get_data())
 
 
-@dp.message_handler(state=Add_ad.waiting_for_picture)
-async def name_entered(message: types.Message, state: FSMContext):
-    # if message.content_type == "photo":
-    print(message.content_type)
-    await state.update_data(product_picture=message.text)
-    await message.answer("Теперь ты гейний")
-    print(await state.get_data())
-    await state.finish()
+async def picture_chosen(message: types.Message):
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    if message.content_type == 'photo':
+        chat_id = message.from_user.id
+        picture = message.photo[0].file_id
+        ad = ad_dict[chat_id]
+        ad.picture_id = picture
+        await bot.send_photo(chat_id=message.from_user.id, photo=picture)
+        await bot.send_message(chat_id, "Подтверди плиз", reply_markup=accept_ad_kb())
+        await Add_ad.next()
+    elif message.content_type == 'text':
+        if message.text == "Нет":
+            await message.answer("Окей, без фотки обойдёмся\nПодтверди плиз", reply_markup=accept_ad_kb())
+            await Add_ad.next()
+        else:
+            keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+            keyboard.add("Нет", "Отмена")
+            await message.answer("Мне нужна фотогравия", reply_markup=keyboard)
+
+
+async def accept_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Подтвердить':
+        await state.finish()
+        chat_id = message.from_user.id
+        ad = ad_dict[chat_id]
+        print(ad)
+        is_admin = db.user_is_admin(message.from_user.id)
+        await bot.send_message(chat_id, f'Всё отлично', reply_markup=mainMenu(is_admin))
+    elif message.text == 'Отмена':
+        await cancel(message, state)
+    else:
+        await message.answer('Пользуйся клавиатурой')
 
 
 @dp.message_handler(commands=['start'])
@@ -170,7 +203,7 @@ async def all_messages(message: types.Message):
                 await message.answer('Управление:', reply_markup=adminMenuProfile())
             else:
                 await message.answer('У вас нет доступа к этой команде', mainMenu(is_admin))
-        elif message.text == "Назад":
+        elif message.text == "Назад" or message.text == "Отмена":
             await message.answer('Вы вернулись назад', reply_markup=mainMenu(is_admin))
         elif message.text == "Добавить объявление":
             await ad_start(message)

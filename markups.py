@@ -12,8 +12,13 @@ def mainMenu(is_admin: bool) -> ReplyKeyboardMarkup:
     return main_Menu
 
 
-def cancel():
+def cancel_kb() -> ReplyKeyboardMarkup():
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    btn = KeyboardButton('Отмена')
-    keyboard.add(btn)
+    keyboard.add('Отмена')
+    return keyboard
+
+
+def accept_ad_kb():
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    keyboard.add('Подтвердить', 'Отмена')
     return keyboard
