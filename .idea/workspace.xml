@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="non">
-      <change afterPath="$PROJECT_DIR$/callback_handlers.py" afterDir="false" />
+    <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="large work">
+      <change afterPath="$PROJECT_DIR$/add_ad.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/message_handlers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/markups.py" beforeDir="false" afterPath="$PROJECT_DIR$/markups.py" afterDir="false" />
@@ -171,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654034826491</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="large work">
+      <created>1654117330858</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1654117330859</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -210,6 +217,7 @@
     <MESSAGE value="add loader" />
     <MESSAGE value="little work" />
     <MESSAGE value="non" />
-    <option name="LAST_COMMIT_MESSAGE" value="non" />
+    <MESSAGE value="large work" />
+    <option name="LAST_COMMIT_MESSAGE" value="large work" />
   </component>
 </project>
