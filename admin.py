@@ -6,7 +6,7 @@ from loader import db
 
 async def admin_ref(message: types.Message):
     await message.answer(f'Твоя ссылка для назначения админа⬇\n'
-                         f'https://t.me/{Bot_name}?start={str(message.from_user.id)[::-1]}\n'
+                         f'https://t.me/{Bot_name}?start=adm{str(message.from_user.id)[::-1]}\n'
                          f'Человек должен перейти по ней и нажать "Старт", чтобы стать админом\n'
                          f'Будь осторожен, не передовай эту ссылку неизвестным людям')
 
@@ -28,7 +28,7 @@ def adminMenuProfile() -> ReplyKeyboardMarkup():
 
 def my_admins_text(user_id):
     admins = db.get_admins()
-    my_adm = [admin[0] for admin in admins if admin[1] == user_id]
+    my_adm = [admin[0] for admin in admins if int(admin[1]) == user_id]
     my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
     if len(my_adm) > 0:
         text = 'Админы, добавленные вами:\n'
@@ -41,7 +41,7 @@ def my_admins_text(user_id):
 
 def my_admins_kb(user_id) -> InlineKeyboardMarkup():
     admins = db.get_admins()
-    my_adm = [admin[0] for admin in admins if admin[1] == user_id]
+    my_adm = [admin[0] for admin in admins if int(admin[1]) == user_id]
     my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
     inline_kb = InlineKeyboardMarkup()
     for name in my_adm_names:

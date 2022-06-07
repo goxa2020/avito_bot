@@ -1,3 +1,5 @@
+# Это конечный автомат для добавления объявлений
+
 import logging
 from loader import dp, db, bot
 from markups import *

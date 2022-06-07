@@ -1,16 +1,15 @@
-import logging
-from aiogram import Bot, types
-from aiogram.dispatcher import Dispatcher, FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
+# import logging
+from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
+from loader import db, dp
 from admin import *
 from markups import *
-from loader import bot, db, dp
 from callback_handlers import *
 from message_handlers import *
 from add_ad import *
 
 
+# Это аналоги @dp.message_handler(), только собранные в одном месте
 def register_handlers(dp: Dispatcher):
     dp.register_message_handler(name_entered, state=Add_ad.waiting_for_name)
     dp.register_message_handler(product_name_chosen, state=Add_ad.waiting_for_product_name)
@@ -21,13 +20,15 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
 
 
+# Функция вызывается при старте бота
 async def start_on(_):
-    register_handlers(dp)
+    register_handlers(dp)  # Регестрируем message handler`ы
 
 
+# Функция вызывается при закрытии бота
 async def on_shutdown(_):
-    db.close()
+    db.close()  # Выключаем базу данных
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True, on_startup=start_on, on_shutdown=on_shutdown)
+    executor.start_polling(dp, skip_updates=True, on_startup=start_on, on_shutdown=on_shutdown)  # Запускаем бота

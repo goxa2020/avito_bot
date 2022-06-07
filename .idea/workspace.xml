@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="now everything is in different files">
+    <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="small work)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/add_ad.py" beforeDir="false" afterPath="$PROJECT_DIR$/add_ad.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sqlighter.py" beforeDir="false" afterPath="$PROJECT_DIR$/sqlighter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_handlers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654199881101</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="small work)">
+      <created>1654629871403</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1654629871403</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,6 +234,7 @@
     <MESSAGE value="non" />
     <MESSAGE value="large work" />
     <MESSAGE value="now everything is in different files" />
-    <option name="LAST_COMMIT_MESSAGE" value="now everything is in different files" />
+    <MESSAGE value="small work)" />
+    <option name="LAST_COMMIT_MESSAGE" value="small work)" />
   </component>
 </project>
