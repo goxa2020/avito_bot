@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="large work">
-      <change afterPath="$PROJECT_DIR$/add_ad.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/message_handlers.py" afterDir="false" />
+    <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="now everything is in different files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/add_ad.py" beforeDir="false" afterPath="$PROJECT_DIR$/add_ad.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markups.py" beforeDir="false" afterPath="$PROJECT_DIR$/markups.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlighter.py" beforeDir="false" afterPath="$PROJECT_DIR$/sqlighter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +25,7 @@
   <component name="Git.Settings">
     <branch-grouping />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
@@ -178,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654117330859</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="now everything is in different files">
+      <created>1654199881101</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1654199881101</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -218,6 +224,7 @@
     <MESSAGE value="little work" />
     <MESSAGE value="non" />
     <MESSAGE value="large work" />
-    <option name="LAST_COMMIT_MESSAGE" value="large work" />
+    <MESSAGE value="now everything is in different files" />
+    <option name="LAST_COMMIT_MESSAGE" value="now everything is in different files" />
   </component>
 </project>

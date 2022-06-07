@@ -135,7 +135,6 @@ async def accept_chosen(message: types.Message, state: FSMContext):
         await state.finish()
         chat_id = message.from_user.id
         ad = ad_dict[chat_id]
-        print(ad)
         await bot.send_message(chat_id, f'Всё отлично', reply_markup=mainMenu(message.from_user.id))
     elif message.text == 'Отмена':
         await cancel(message, state)

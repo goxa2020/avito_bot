@@ -25,5 +25,9 @@ async def start_on(_):
     register_handlers(dp)
 
 
+async def on_shutdown(_):
+    db.close()
+
+
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True, on_startup=start_on)
+    executor.start_polling(dp, skip_updates=True, on_startup=start_on, on_shutdown=on_shutdown)
