@@ -42,6 +42,15 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute(f'SELECT admin_name FROM admins WHERE admin_id = {admin_id}').fetchmany(1)[0][0]
 
+    def add_ad(self, name, product_name, product_amount, product_price, town, picture_id, user_id):
+        with self.connection:
+            return self.cursor.execute(f'INSERT INTO ad_for_add (name, product_name, product_amount, product_price, town, picture_id, user_id) '
+                                       f'VALUES(?,?,?,?,?,?,?)', (name, product_name, product_amount, product_price, town, picture_id, user_id))
+
+    def get_ads(self):
+        with self.connection:
+            return self.cursor.execute("SELECT * FROM `ad_for_add`").fetchall()
+
     def close(self):
         self.connection.close()
 # i love u

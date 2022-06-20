@@ -2,7 +2,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 from aiogram import types
 from config import Bot_name
 from loader import db
-
+import itertools
 
 async def admin_ref(message: types.Message):
     await message.answer(f'Твоя ссылка для назначения админа⬇\n'
@@ -13,7 +13,8 @@ async def admin_ref(message: types.Message):
 
 def adminMenu(keyboard):
     btn1 = KeyboardButton('Управление админами')
-    keyboard.add(btn1)
+    btn2 = KeyboardButton('Управление объявлениями')
+    keyboard.add(btn1).add(btn2)
     return keyboard
 
 
@@ -57,3 +58,7 @@ def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
     inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelCallDelAdm_{admin_id}')
     inline_kb.add(inline_btn1).add(inline_btn2)
     return inline_kb
+
+
+async def show_ad(message):
+    await message.answer('Функция не готова(((')

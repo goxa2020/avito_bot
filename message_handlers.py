@@ -63,9 +63,14 @@ async def all_messages(message: types.Message):
                 await message.answer('Управление:', reply_markup=adminMenuProfile())
             else:
                 await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
+        elif message.text == 'Управление объявлениями':
+            if is_admin:
+                await show_ad(message)
+            else:
+                await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
         elif message.text == "Назад" or message.text == "Отмена":
             await message.answer('Вы вернулись назад', reply_markup=mainMenu(message.from_user.id))
         elif message.text == "Добавить объявление":
             await ad_start(message)
         else:
-            await message.answer('Я тебя не понял')
+            await message.answer('Я тебя не понял', reply_markup=mainMenu(message.from_user.id))
