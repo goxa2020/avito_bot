@@ -17,6 +17,7 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(product_price_chosen, state=Add_ad.waiting_for_product_price)
     dp.register_message_handler(town_chosen, state=Add_ad.waiting_for_town)
     dp.register_message_handler(picture_chosen, state=Add_ad.waiting_for_picture, content_types=['text', 'photo'])
+    dp.register_message_handler(description_chosen, state=Add_ad.waiting_for_description)
     dp.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
 
 

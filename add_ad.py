@@ -17,6 +17,7 @@ class Add_ad(StatesGroup):
     waiting_for_product_price = State()
     waiting_for_town = State()
     waiting_for_picture = State()
+    waiting_for_description = State()
     waiting_for_accept = State()
 
 
@@ -31,6 +32,7 @@ class Ad:
         self.product_price = None
         self.town = None
         self.picture_id = None
+        self.description = None
 
 
 async def cancel(message: types.Message, state: FSMContext):
@@ -123,24 +125,16 @@ async def picture_chosen(message: types.Message, state: FSMContext):
         chat_id = message.from_user.id
         ad = ad_dict[chat_id]
         ad.picture_id = message.photo[0].file_id
-        await message.answer(f'Подтвердите пожалуйста\n'
-                             f'Имя: {ad.name}\n'
-                             f'Название товара: {ad.product_name}\n'
-                             f'Количество товара: {ad.product_amount}\n'
-                             f'Цена: {ad.product_price}\n'
-                             f'Город: {ad.town}', reply_markup=accept_ad_kb())
+
+        await message.answer(f'Отлично, теперь отправь описание товара', reply_markup=cancel_kb())
+
         await Add_ad.next()
     elif message.content_type == 'text':
         if message.text == "Нет":
             chat_id = message.from_user.id
             ad = ad_dict[chat_id]
             await message.answer(f'Окей, без фотки обойдёмся\n'
-                                 f'Подтвердите пожалуйста\n'
-                                 f'Имя: {ad.name}\n'
-                                 f'Название товара: {ad.product_name}\n'
-                                 f'Количество товара: {ad.product_amount}\n'
-                                 f'Цена: {ad.product_price}\n'
-                                 f'Город: {ad.town}', reply_markup=accept_ad_kb())
+                                 f'Отправь описание товара', reply_markup=cancel_kb())
             await Add_ad.next()
         else:
             keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
@@ -152,12 +146,31 @@ async def picture_chosen(message: types.Message, state: FSMContext):
         await message.answer("Мне нужна фотогравия", reply_markup=keyboard)
 
 
+async def description_chosen(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await cancel(message, state)
+        return
+    chat_id = message.from_user.id
+    ad = ad_dict[chat_id]
+    ad.description = message.text
+
+    await message.answer(f'Подтвердите пожалуйста\n'
+                         f'Имя: {ad.name}\n'
+                         f'Название товара: {ad.product_name}\n'
+                         f'Количество товара: {ad.product_amount}\n'
+                         f'Цена: {ad.product_price}\n'
+                         f'Город: {ad.town}\n'
+                         f'Описание: {ad.description}', reply_markup=accept_ad_kb())
+
+    await Add_ad.next()
+
+
 async def accept_chosen(message: types.Message, state: FSMContext):
     if message.text == 'Подтвердить':
         await state.finish()
         chat_id = message.from_user.id
         ad = ad_dict[chat_id]
-        db.add_ad(ad.name, ad.product_name, ad.product_amount, ad.product_price, ad.town, ad.picture_id, message.from_user.id)
+        db.add_ad(ad.name, ad.product_name, ad.product_amount, ad.product_price, ad.town, ad.picture_id, message.from_user.id, ad.description)
         await bot.send_message(chat_id, f'Всё отлично', reply_markup=mainMenu(message.from_user.id))
     elif message.text == 'Отмена':
         await cancel(message, state)

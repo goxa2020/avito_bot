@@ -65,7 +65,7 @@ async def all_messages(message: types.Message):
                 await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
         elif message.text == 'Управление объявлениями':
             if is_admin:
-                await show_ad(message)
+                await show_ad(message.from_user.id)
             else:
                 await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
         elif message.text == "Назад" or message.text == "Отмена":

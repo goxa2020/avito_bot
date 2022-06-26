@@ -1,8 +1,9 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types
-from config import Bot_name
-from loader import db
+from config import Bot_name, no_photo
+from loader import db, bot
 import itertools
+
 
 async def admin_ref(message: types.Message):
     await message.answer(f'Твоя ссылка для назначения админа⬇\n'
@@ -60,5 +61,30 @@ def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
     return inline_kb
 
 
-async def show_ad(message):
-    await message.answer('Функция не готова(((')
+async def show_ad(user_id, ad_id = 0):
+
+    ads = db.get_ads()
+    ad = ads[ad_id]
+
+    text = f"Объявление 1 из {len(ads)}\n" \
+           f"Имя: {ad[0]}\n" \
+           f"Название товара: {ad[1]}\n" \
+           f"Количество: {ad[2]}\n" \
+           f"Цена: {ad[3]}\n" \
+           f"Город: {ad[4]}\n" \
+           f"Описание: {ad[7]}\n"
+
+    inline_kb = InlineKeyboardMarkup()
+    inline_btn1 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_id+1}')
+    inline_btn2 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_id}')
+    inline_btn3 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_id}')
+    inline_btn4 = InlineKeyboardButton('Назад', callback_data=f'cancel')
+    inline_kb.add(inline_btn1).row(inline_btn2, inline_btn3).add(inline_btn4)
+
+    if ad[5]:
+
+        return await bot.send_photo(chat_id = user_id, photo = ad[5], caption = text, reply_markup=inline_kb)
+
+    else:
+
+        return await bot.send_photo(chat_id = user_id, photo = no_photo, caption = text, reply_markup=inline_kb)
