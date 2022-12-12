@@ -5,8 +5,8 @@ import sqlite3
 class Sqlighter:
     def __init__(self, database_file):
         self.connection = sqlite3.connect(database_file, check_same_thread=False)
-        logging.info("Подключение к базе данных успешно".upper())
         self.cursor = self.connection.cursor()
+        logging.info("Подключение к базе данных успешно".upper())
 
     def add_user(self, user_id):
         with self.connection:

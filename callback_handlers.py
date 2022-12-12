@@ -59,11 +59,13 @@ async def callback(callback_query: types.CallbackQuery):
 
     await bot.answer_callback_query(callback_query.id)
 
-    id = int(callback_query.data.split("_")[1])
+    ad_index = int(callback_query.data.split("_")[1])
     ads = db.get_ads()
-    ad = ads[id]
 
-    text = f"Объявление {id+1} из {len(ads)}\n" \
+    ad_index = int(ad_index % len(ads))
+    ad = ads[ad_index]
+
+    text = f"Объявление {ad_index+1} из {len(ads)}\n" \
            f"Имя: {ad[0]}\n" \
            f"Название товара: {ad[1]}\n" \
            f"Количество: {ad[2]}\n" \
@@ -72,10 +74,10 @@ async def callback(callback_query: types.CallbackQuery):
            f"Описание: {ad[7]}\n"
 
     inline_kb = InlineKeyboardMarkup()
-    inline_btn0 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showAd_{id-1 if id != 0 else len(ads)-1}')
-    inline_btn1 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{id+1 if id != len(ads)-1 else 0}')
-    inline_btn2 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{id}')
-    inline_btn3 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{id}')
+    inline_btn0 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showAd_{ad_index-1}')
+    inline_btn1 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index+1}')
+    inline_btn2 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
+    inline_btn3 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
     inline_btn4 = InlineKeyboardButton('Отмена', callback_data=f'cancel')
     inline_kb.row(inline_btn0, inline_btn1).row(inline_btn2, inline_btn3).add(inline_btn4)
 
@@ -102,15 +104,14 @@ async def callback(callback_query: types.CallbackQuery):
 
     await bot.answer_callback_query(callback_query.id)
 
-    Ad_id = int(callback_query.data.split("_")[1])
+    ad_index = int(callback_query.data.split("_")[1])
 
-    accept_del_ad_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'acceptDelAd_{Ad_id}')
-    inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelDelAd_{Ad_id}')
-    accept_del_ad_kb.add(inline_btn1).add(inline_btn2)
+    accept_del_ad_keyboard = InlineKeyboardMarkup()
+    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'acceptDelAd_{ad_index}')
+    inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancel')
+    accept_del_ad_keyboard.add(inline_btn1).add(inline_btn2)
 
-    await bot.edit_message_text(f'Точно удалить это объявление', callback_query.from_user.id,
-                                callback_query.message.message_id, reply_markup=accept_del_ad_kb)
+    await bot.send_message(callback_query.from_user.id, 'Точно удалить это объявление', reply_markup=accept_del_ad_keyboard)
 
 
 @dp.callback_query_handler(text_contains="acceptDelAd_")
@@ -118,33 +119,36 @@ async def callback(callback_query: types.CallbackQuery):
 
     await bot.answer_callback_query(callback_query.id)
 
-    Ad_id = int(callback_query.data.split("_")[1])
+    ad_index = int(callback_query.data.split("_")[1])
+
+    ads = db.get_ads()
+
+    ad = ads[ad_index]
+
+    ad_id = ad[8]
 
     try:
 
-        db.del_ad(Ad_id)
-
+        db.del_ad(ad_id)
+        print("КУКУ")
     except Exception:
 
         await bot.edit_message_text('Что-то не получилось',
                                     callback_query.from_user.id,
                                     callback_query.message.message_id)
 
-        await show_ad(callback_query.from_user.id, Ad_id)
+        await show_ad(callback_query.from_user.id, ad_index-1)
 
     else:
 
         await bot.edit_message_text(f'Это объявление успешно отклонено',
                                     callback_query.from_user.id,
                                     callback_query.message.message_id,
-                                    reply_markup=my_admins_kb(user_id))
+                                    reply_markup=my_admins_kb(callback_query.from_user.id))
 
-        await show_ad(callback_query.from_user.id, Ad_id-1)
+        await show_ad(callback_query.from_user.id, ad_index-1)
 
         try:
-
-            ads = db.get_ads()
-            ad = ads[Ad_id]
 
             await bot.send_message(ad[6], f'Администратор отклонил вашу запись с товаром {ad[1]}')
 

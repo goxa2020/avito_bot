@@ -30,12 +30,12 @@ def adminMenuProfile() -> ReplyKeyboardMarkup():
 
 def my_admins_text(user_id):
     admins = db.get_admins()
-    my_adm = [admin[0] for admin in admins if int(admin[1]) == user_id]
-    my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
-    if len(my_adm) > 0:
+    my_admins = [admin[0] for admin in admins if int(admin[1]) == user_id]
+    my_admins_names = [admin[2] for admin in admins if admin[0] in my_admins]
+    if len(my_admins) > 0:
         text = 'Админы, добавленные вами:\n'
-        for i in range(len(my_adm)):
-            text += f'{i + 1}: {my_adm_names[i]}, ID: {my_adm[i]}\n'
+        for i in range(len(my_admins)):
+            text += f'{i + 1}: {my_admins_names[i]}, ID: {my_admins[i]}\n'
     else:
         text = 'У вас нет ниодного добавленного админа'
     return text
@@ -43,12 +43,12 @@ def my_admins_text(user_id):
 
 def my_admins_kb(user_id) -> InlineKeyboardMarkup():
     admins = db.get_admins()
-    my_adm = [admin[0] for admin in admins if int(admin[1]) == user_id]
-    my_adm_names = [admin[2] for admin in admins if admin[0] in my_adm]
+    my_admins = [admin[0] for admin in admins if int(admin[1]) == user_id]
+    my_admins_names = [admin[2] for admin in admins if admin[0] in my_admins]
     inline_kb = InlineKeyboardMarkup()
-    for name in my_adm_names:
+    for name in my_admins_names:
         inline_btn = InlineKeyboardButton(f'Лишить админки {name}', callback_data=f'callDelAdm_'
-                                                                                  f'{my_adm[my_adm_names.index(name)]}')
+                                                                                  f'{my_admins[my_admins_names.index(name)]}')
         inline_kb.add(inline_btn)
     return inline_kb
 
@@ -61,12 +61,17 @@ def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
     return inline_kb
 
 
-async def show_ad(user_id, ad_id = 0):
+async def show_ad(user_id, ad_index = None):
+
+    ad_index = ad_index or 0
 
     ads = db.get_ads()
-    ad = ads[ad_id]
 
-    text = f"Объявление 1 из {len(ads)}\n" \
+    ad_index = int(ad_index % len(ads))
+
+    ad = ads[ad_index]
+
+    text = f"Объявление {ad_index+1} из {len(ads)}\n" \
            f"Имя: {ad[0]}\n" \
            f"Название товара: {ad[1]}\n" \
            f"Количество: {ad[2]}\n" \
@@ -75,11 +80,12 @@ async def show_ad(user_id, ad_id = 0):
            f"Описание: {ad[7]}\n"
 
     inline_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_id+1}')
-    inline_btn2 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_id}')
-    inline_btn3 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_id}')
-    inline_btn4 = InlineKeyboardButton('Назад', callback_data=f'cancel')
-    inline_kb.add(inline_btn1).row(inline_btn2, inline_btn3).add(inline_btn4)
+    inline_btn1 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showAd_{ad_index-1}')
+    inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index+1}')
+    inline_btn3 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
+    inline_btn4 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
+    inline_btn5 = InlineKeyboardButton('Назад', callback_data=f'cancel')
+    inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4).add(inline_btn5)
 
     if ad[5]:
 

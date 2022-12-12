@@ -131,8 +131,8 @@ async def picture_chosen(message: types.Message, state: FSMContext):
         await Add_ad.next()
     elif message.content_type == 'text':
         if message.text == "Нет":
-            chat_id = message.from_user.id
-            ad = ad_dict[chat_id]
+            # chat_id = message.from_user.id
+            # ad = ad_dict[chat_id]
             await message.answer(f'Окей, без фотки обойдёмся\n'
                                  f'Отправь описание товара', reply_markup=cancel_kb())
             await Add_ad.next()
