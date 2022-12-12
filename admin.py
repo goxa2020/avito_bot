@@ -12,7 +12,7 @@ async def admin_ref(message: types.Message):
                          f'Будь осторожен, не передовай эту ссылку неизвестным людям')
 
 
-def adminMenu(keyboard):
+def adminMenu(keyboard: ReplyKeyboardMarkup()) -> ReplyKeyboardMarkup():
     btn1 = KeyboardButton('Управление админами')
     btn2 = KeyboardButton('Управление объявлениями')
     keyboard.add(btn1).add(btn2)
@@ -84,8 +84,7 @@ async def show_ad(user_id, ad_index = None):
     inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index+1}')
     inline_btn3 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
     inline_btn4 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
-    inline_btn5 = InlineKeyboardButton('Назад', callback_data=f'cancel')
-    inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4).add(inline_btn5)
+    inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4)
 
     if ad[5]:
 
