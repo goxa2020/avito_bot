@@ -2,7 +2,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 from aiogram import types
 from config import Bot_name, no_photo
 from loader import db, bot
-import itertools
+from markups import mainMenu
 
 
 async def admin_ref(message: types.Message):
@@ -10,13 +10,6 @@ async def admin_ref(message: types.Message):
                          f'https://t.me/{Bot_name}?start=adm{str(message.from_user.id)[::-1]}\n'
                          f'Человек должен перейти по ней и нажать "Старт", чтобы стать админом\n'
                          f'Будь осторожен, не передовай эту ссылку неизвестным людям')
-
-
-def adminMenu(keyboard: ReplyKeyboardMarkup()) -> ReplyKeyboardMarkup():
-    btn1 = KeyboardButton('Управление админами')
-    btn2 = KeyboardButton('Управление объявлениями')
-    keyboard.add(btn1).add(btn2)
-    return keyboard
 
 
 def adminMenuProfile() -> ReplyKeyboardMarkup():
@@ -67,6 +60,10 @@ async def show_ad(user_id, ad_index = None):
 
     ads = db.get_ads()
 
+    if not len(ads):
+
+        return await bot.send_message(user_id, 'Нет объявлений на рассмотрении', reply_markup=mainMenu(user_id))
+
     ad_index = int(ad_index % len(ads))
 
     ad = ads[ad_index]
@@ -90,6 +87,4 @@ async def show_ad(user_id, ad_index = None):
 
         return await bot.send_photo(chat_id = user_id, photo = ad[5], caption = text, reply_markup=inline_kb)
 
-    else:
-
-        return await bot.send_photo(chat_id = user_id, photo = no_photo, caption = text, reply_markup=inline_kb)
+    return await bot.send_photo(chat_id = user_id, photo = no_photo, caption = text, reply_markup=inline_kb)

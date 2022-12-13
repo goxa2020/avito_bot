@@ -4,6 +4,7 @@ from aiogram import types
 from markups import *
 from admin import *
 from add_ad import ad_start
+from config import chanel_id
 import logging
 
 
@@ -45,6 +46,8 @@ async def start_message(message: types.Message):
 
 @dp.message_handler(content_types=['text'])
 async def all_messages(message: types.Message):
+    if message.chat.type == 'supergroup':
+        await bot.send_message(message.chat.id, message.text)
     if message.chat.type == 'private':
         is_admin = db.user_is_admin(message.from_user.id)
         if message.text == 'Добавить админа':

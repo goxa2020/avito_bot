@@ -6,8 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/add_ad.py" beforeDir="false" afterPath="$PROJECT_DIR$/add_ad.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/callback_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/callback_handlers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/markups.py" beforeDir="false" afterPath="$PROJECT_DIR$/markups.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_handlers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sqlighter.py" beforeDir="false" afterPath="$PROJECT_DIR$/sqlighter.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670868487899</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Начало работы над публикациями">
+      <created>1670872252310</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670872252310</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -248,6 +260,7 @@
     <MESSAGE value="small work)" />
     <MESSAGE value="небольшие доработки&#10;исправлено отоброжение админов" />
     <MESSAGE value="Очень большие доработки&#10;Работа с отклонением объявлений" />
-    <option name="LAST_COMMIT_MESSAGE" value="Очень большие доработки&#10;Работа с отклонением объявлений" />
+    <MESSAGE value="Начало работы над публикациями" />
+    <option name="LAST_COMMIT_MESSAGE" value="Начало работы над публикациями" />
   </component>
 </project>

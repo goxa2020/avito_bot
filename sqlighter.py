@@ -42,10 +42,10 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute(f'SELECT admin_name FROM admins WHERE admin_id = {admin_id}').fetchmany(1)[0][0]
 
-    def add_ad(self, name, product_name, product_amount, product_price, town, picture_id, user_id, description):
+    def add_ad(self, user_name, product_name, product_amount, product_price, town, picture_id, user_id, description):
         with self.connection:
-            return self.cursor.execute(f'INSERT INTO ad_for_add (name, product_name, product_amount, product_price, town, picture_id, user_id, description) '
-                                       f'VALUES(?,?,?,?,?,?,?,?)', (name, product_name, product_amount, product_price, town, picture_id, user_id, description))
+            return self.cursor.execute(f'INSERT INTO ad_for_add (user_name, product_name, product_amount, product_price, town, picture_id, user_id, description) '
+                                       f'VALUES(?,?,?,?,?,?,?,?)', (user_name, product_name, product_amount, product_price, town, picture_id, user_id, description))
 
     def get_ads(self):
         with self.connection:

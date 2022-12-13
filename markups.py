@@ -1,6 +1,6 @@
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from admin import adminMenu
+
 from loader import db
 
 
@@ -12,6 +12,13 @@ def mainMenu(user_id) -> ReplyKeyboardMarkup:
     if is_admin:
         return adminMenu(main_Menu)
     return main_Menu
+
+
+def adminMenu(keyboard: ReplyKeyboardMarkup()) -> ReplyKeyboardMarkup():
+    btn1 = KeyboardButton('Управление админами')
+    btn2 = KeyboardButton('Управление объявлениями')
+    keyboard.add(btn1).add(btn2)
+    return keyboard
 
 
 def cancel_kb() -> ReplyKeyboardMarkup():

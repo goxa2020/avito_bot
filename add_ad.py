@@ -170,7 +170,7 @@ async def accept_chosen(message: types.Message, state: FSMContext):
         await state.finish()
         chat_id = message.from_user.id
         ad = ad_dict[chat_id]
-        db.add_ad(ad.name, ad.product_name, ad.product_amount, ad.product_price, ad.town, ad.picture_id, message.from_user.id, ad.description)
+        db.add_ad(message.from_user.mention, ad.product_name, ad.product_amount, ad.product_price, ad.town, ad.picture_id, message.from_user.id, ad.description)
         await bot.send_message(chat_id, f'Всё отлично', reply_markup=mainMenu(message.from_user.id))
     elif message.text == 'Отмена':
         await cancel(message, state)
