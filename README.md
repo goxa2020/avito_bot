@@ -1,2 +1,3 @@
 # botik
-It is a test git repository 
+
+Телеграм бот для выкладывания объявлений о продаже чего-либо на канал https://t.me/ttttttttesst
