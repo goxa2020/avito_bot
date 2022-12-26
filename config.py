@@ -1,6 +1,11 @@
-Bot_token = "5117098840:AAGVc313EPr6olGQKPvhNhTht9QuKO3Asr4"
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+Bot_token = os.getenv('TOKEN')
 Bot_name = 'testtikk_bbot'
 chanel_name = '@ttttttttesst'
-chanel_id = '-1001658466096'
-no_photo = 'AgACAgIAAxkBAAIK0mK3oQuVT6G3K7LjOscDsJL5ouYWAAKEwTEb47e4ScWJE5z958-bAQADAgADcwADKQQ'
+chanel_id = os.getenv('CHANEL_ID')
+no_photo = os.getenv('PHOTO_ID')
 # I love u very much

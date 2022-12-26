@@ -5,7 +5,7 @@ from loader import db, dp
 from admin import *
 from markups import *
 from callback_handlers import *
-from message_handlers import *
+from message_handlers import start_message_handler, help_message_handler, text_message_handler
 from add_ad import *
 
 
