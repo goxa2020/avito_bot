@@ -1,16 +1,15 @@
-# import logging
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from loader import db, dp
-from admin import *
-from markups import *
-from callback_handlers import *
-from message_handlers import start_message_handler, help_message_handler, text_message_handler
+import callback_handlers
+import message_handlers
 from add_ad import *
 
 
-# Это аналоги @dp.message_handler(), только собранные в одном месте
 def register_handlers(dp: Dispatcher):
+    """
+    Это аналоги @dp.message_handler(), только собранные в одном месте
+    """
     dp.register_message_handler(name_entered, state=Add_ad.waiting_for_name)
     dp.register_message_handler(product_name_chosen, state=Add_ad.waiting_for_product_name)
     dp.register_message_handler(product_amount_chosen, state=Add_ad.waiting_for_product_amount)
@@ -21,13 +20,17 @@ def register_handlers(dp: Dispatcher):
     dp.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
 
 
-# Функция вызывается при старте бота
 async def start_on(_):
+    """
+    Функция вызывается при старте бота
+    """
     register_handlers(dp)  # Регестрируем message handler`ы
 
 
-# Функция вызывается при закрытии бота
 async def on_shutdown(_):
+    """
+    Функция вызывается при закрытии бота
+    """
     db.close()  # Выключаем базу данных
 
 

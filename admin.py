@@ -40,8 +40,8 @@ def my_admins_kb(user_id) -> InlineKeyboardMarkup():
     my_admins_names = [admin[2] for admin in admins if admin[0] in my_admins]
     inline_kb = InlineKeyboardMarkup()
     for name in my_admins_names:
-        inline_btn = InlineKeyboardButton(f'Лишить админки {name}', callback_data=f'callDelAdm_'
-                                                                                  f'{my_admins[my_admins_names.index(name)]}')
+        inline_btn = InlineKeyboardButton(f'Лишить админки {name}',
+                                          callback_data=f'callDelAdm_{my_admins[my_admins_names.index(name)]}')
         inline_kb.add(inline_btn)
     return inline_kb
 

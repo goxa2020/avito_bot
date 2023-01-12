@@ -1,3 +1,6 @@
+"""
+Модуль, отвечающий за обработку нажатий inline кнопкок в сообщениях
+"""
 from loader import dp, db, bot
 from aiogram import types
 from markups import *
