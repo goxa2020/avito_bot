@@ -1,4 +1,3 @@
-from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from loader import db, dp
 import callback_handlers
@@ -6,7 +5,7 @@ import message_handlers
 from add_ad import *
 
 
-def register_handlers(dp: Dispatcher):
+def register_handlers(dp):
     """
     Это аналоги @dp.message_handler(), только собранные в одном месте
     """

@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c36917b8-6876-461f-bbac-31cfe1f410df" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/add_ad.py" beforeDir="false" afterPath="$PROJECT_DIR$/add_ad.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/callback_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/callback_handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/markups.py" beforeDir="false" afterPath="$PROJECT_DIR$/markups.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/message_handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sqlighter.py" beforeDir="false" afterPath="$PROJECT_DIR$/sqlighter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_handlers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/message_handlers/text_message_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/message_handlers/text_message_handler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,11 +40,11 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/config.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/admin.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/sqlighter.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/config.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/markups.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/admin.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -61,8 +61,9 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../telegram-bot-lessons/lesson-2-inline-keyboard" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -82,16 +83,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="" />
-      <EXTENSION ID="net.ashald.envfile">
-        <option name="IS_ENABLED" value="false" />
-        <option name="IS_SUBST" value="false" />
-        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-        <option name="IS_IGNORE_MISSING_FILES" value="false" />
-        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
-        <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-        </ENTRIES>
-      </EXTENSION>
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -216,7 +207,28 @@
       <option name="project" value="LOCAL" />
       <updated>1670872252310</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Проверка">
+      <created>1670960331287</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1670960331288</updated>
+    </task>
+    <task id="LOCAL-00017" summary="dotenv + small refactoring">
+      <created>1672088132614</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1672088132614</updated>
+    </task>
+    <task id="LOCAL-00018" summary="небольшие поправочки">
+      <created>1673553362302</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1673553362303</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -248,6 +260,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="ff" />
     <MESSAGE value="f" />
     <MESSAGE value="first commit" />
@@ -261,6 +274,9 @@
     <MESSAGE value="небольшие доработки&#10;исправлено отоброжение админов" />
     <MESSAGE value="Очень большие доработки&#10;Работа с отклонением объявлений" />
     <MESSAGE value="Начало работы над публикациями" />
-    <option name="LAST_COMMIT_MESSAGE" value="Начало работы над публикациями" />
+    <MESSAGE value="Проверка" />
+    <MESSAGE value="dotenv + small refactoring" />
+    <MESSAGE value="небольшие поправочки" />
+    <option name="LAST_COMMIT_MESSAGE" value="небольшие поправочки" />
   </component>
 </project>

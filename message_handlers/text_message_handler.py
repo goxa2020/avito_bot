@@ -9,8 +9,8 @@ from add_ad import ad_start
 
 @dp.message_handler(content_types=['text'])
 async def all_messages(message: types.Message):
-    if message.chat.type == 'supergroup':
-        await bot.send_message(message.chat.id, message.text)
+    # if message.chat.type == 'supergroup':
+    #     pass
     if message.chat.type == 'private':
         is_admin = db.user_is_admin(message.from_user.id)
         if message.text == 'Добавить админа':

@@ -191,9 +191,9 @@ async def callback(callback_query: types.CallbackQuery):
     ad = ads[ad_index]
     ad_id = ad[8]
 
-    write_seller = InlineKeyboardMarkup()
-    inline_btn = InlineKeyboardButton('Написать продавцу', url=f'https://t.me/{ad[0][1:]}')
-    write_seller.add(inline_btn)
+    write_to_seller = InlineKeyboardMarkup()
+    inline_btn = InlineKeyboardButton('Написать продавцу', url=f'https://t.me/{ad[0]}')
+    write_to_seller.add(inline_btn)
 
     text = f'Товар: {ad[1]} \n' \
            f'Количество: {ad[2]} \n' \
@@ -205,11 +205,11 @@ async def callback(callback_query: types.CallbackQuery):
 
         if ad[5]:
 
-            await bot.send_photo(chat_id=chanel_name, photo=ad[5], caption=text, reply_markup=write_seller)
+            await bot.send_photo(chat_id=chanel_name, photo=ad[5], caption=text, reply_markup=write_to_seller)
 
         else:
 
-            await bot.send_message(chanel_name, text, reply_markup=write_seller)
+            await bot.send_message(chanel_name, text, reply_markup=write_to_seller)
 
     except Exception as e:
 
