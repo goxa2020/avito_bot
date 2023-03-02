@@ -21,7 +21,7 @@ def adminMenuProfile() -> ReplyKeyboardMarkup():
     return admin_Menu
 
 
-def my_admins_text(user_id):
+def my_admins_text(user_id: int) -> str:
     admins = db.get_admins()
     my_admins = [admin[0] for admin in admins if int(admin[1]) == user_id]
     my_admins_names = [admin[2] for admin in admins if admin[0] in my_admins]
