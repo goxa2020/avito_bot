@@ -189,23 +189,22 @@ async def callback(callback_query: types.CallbackQuery):
     ad_index = int(callback_query.data.split("_")[1])
     ads = db.get_ads()
     ad = ads[ad_index]
-    ad_id = ad[8]
 
     write_to_seller = InlineKeyboardMarkup()
-    inline_btn = InlineKeyboardButton('Написать продавцу', url=f'https://t.me/{ad[0]}')
+    inline_btn = InlineKeyboardButton('Написать продавцу', url=f'https://t.me/{ad[1][1::]}')
     write_to_seller.add(inline_btn)
 
-    text = f'Товар: {ad[1]} \n' \
-           f'Количество: {ad[2]} \n' \
-           f'Цена за штуку: {ad[3]} \n' \
+    text = f'Товар: {ad[2]} \n' \
+           f'Количество: {ad[3]} \n' \
+           f'Цена за штуку: {ad[4]} \n' \
            f'Описание: {ad[7]} \n' \
-           f'Город: {ad[4]}'
+           f'Город: {ad[5]}'
 
     try:
 
         if ad[5]:
 
-            await bot.send_photo(chat_id=chanel_name, photo=ad[5], caption=text, reply_markup=write_to_seller)
+            await bot.send_photo(chat_id=chanel_name, photo=ad[8], caption=text, reply_markup=write_to_seller)
 
         else:
 
@@ -223,27 +222,17 @@ async def callback(callback_query: types.CallbackQuery):
 
     else:
 
+        await bot.edit_message_text(f'Это объявление успешно опубликованно',
+                                    callback_query.from_user.id,
+                                    callback_query.message.message_id,
+                                    reply_markup=None)
+
+        await show_ad(callback_query.from_user.id, ad_index - 1)
+
         try:
 
-            db.del_ad(ad_id)
+            await bot.send_message(ad[6], f'Администратор опубликовал вашу запись с товаром {ad[2]}')
 
         except Exception as e:
 
-            logging.warning(e)
-
-        else:
-
-            await bot.edit_message_text(f'Это объявление успешно опубликованно',
-                                        callback_query.from_user.id,
-                                        callback_query.message.message_id,
-                                        reply_markup=None)
-
-            await show_ad(callback_query.from_user.id, ad_index - 1)
-
-            try:
-
-                await bot.send_message(ad[6], f'Администратор опубликовал вашу запись с товаром {ad[1]}')
-
-            except Exception as e:
-
-                logging.info(e)
+            logging.info(e)

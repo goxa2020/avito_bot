@@ -69,11 +69,11 @@ async def show_ad(user_id, ad_index = None):
     ad = ads[ad_index]
 
     text = f"Объявление {ad_index+1} из {len(ads)}\n" \
-           f"Имя: {ad[0]}\n" \
-           f"Название товара: {ad[1]}\n" \
-           f"Количество: {ad[2]}\n" \
-           f"Цена: {ad[3]}\n" \
-           f"Город: {ad[4]}\n" \
+           f"Имя: {ad[1]}\n" \
+           f"Название товара: {ad[2]}\n" \
+           f"Количество: {ad[3]}\n" \
+           f"Цена: {ad[4]}\n" \
+           f"Город: {ad[5]}\n" \
            f"Описание: {ad[7]}\n"
 
     inline_kb = InlineKeyboardMarkup()
@@ -84,7 +84,6 @@ async def show_ad(user_id, ad_index = None):
     inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4)
 
     if ad[5]:
-
-        return await bot.send_photo(chat_id = user_id, photo = ad[5], caption = text, reply_markup=inline_kb)
+        return await bot.send_photo(chat_id = user_id, photo = ad[8], caption = text, reply_markup=inline_kb)
 
     return await bot.send_photo(chat_id = user_id, photo = no_photo, caption = text, reply_markup=inline_kb)
