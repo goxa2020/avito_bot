@@ -59,7 +59,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../telegram-bot-lessons/lesson-2-inline-keyboard" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
@@ -239,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677784357069</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="оптимизация БД">
+      <created>1677787212580</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1677787212580</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,6 +295,7 @@
     <MESSAGE value="Проверка" />
     <MESSAGE value="dotenv + small refactoring" />
     <MESSAGE value="небольшие поправочки" />
-    <option name="LAST_COMMIT_MESSAGE" value="небольшие поправочки" />
+    <MESSAGE value="оптимизация БД" />
+    <option name="LAST_COMMIT_MESSAGE" value="оптимизация БД" />
   </component>
 </project>

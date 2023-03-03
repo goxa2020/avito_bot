@@ -202,13 +202,13 @@ async def callback(callback_query: types.CallbackQuery):
 
     try:
 
-        if ad[5]:
+        if ad[8]:
 
-            await bot.send_photo(chat_id=chanel_name, photo=ad[8], caption=text, reply_markup=write_to_seller)
+            message = await bot.send_photo(chat_id=chanel_name, photo=ad[8], caption=text, reply_markup=write_to_seller)
 
         else:
 
-            await bot.send_message(chanel_name, text, reply_markup=write_to_seller)
+            message = await bot.send_message(chanel_name, text, reply_markup=write_to_seller)
 
     except Exception as e:
 
@@ -221,6 +221,13 @@ async def callback(callback_query: types.CallbackQuery):
         logging.warning(e)
 
     else:
+        message_id = message.message_id
+
+        print(message_id)
+
+        db.update_ad_post_id(ad[0], message_id)
+
+        db.update_ad_status(ad[0])
 
         await bot.edit_message_text(f'Это объявление успешно опубликованно',
                                     callback_query.from_user.id,

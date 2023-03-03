@@ -58,6 +58,14 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute(f'DELETE FROM ads WHERE `ad_id` = {ad_id}')
 
+    def update_ad_status(self, ad_id, posted_status = True):
+        with self.connection:
+            return self.cursor.execute(f'UPDATE ads SET posted = {posted_status} WHERE ad_id = {ad_id}')
+
+    def update_ad_post_id(self, ad_id, post_id):
+        with self.connection:
+            return self.cursor.execute(f'UPDATE ads SET post_id = {post_id} WHERE ad_id = {ad_id}')
+
     # def add_posted_ad(self, user_name, product_name, product_amount, product_price, town, picture_id, user_id, description, post_id):
     #     with self.connection:
     #         return self.cursor.execute(f'INSERT INTO posted_ads (user_name, product_name, product_amount, product_price, town, picture_id, user_id, description) '
