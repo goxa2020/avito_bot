@@ -24,7 +24,7 @@ class Sqlighter:
         with self.connection:
             result = self.cursor.execute("SELECT * FROM `users` WHERE `user_id` = ?", (user_id,)).fetchall()
             return bool(len(result))
-    
+
     def add_admin(self, user_id, appointed_by, admin_name):
         with self.connection:
             return self.cursor.execute(f'INSERT INTO admins (admin_id, appointed_by, admin_name) '
@@ -42,7 +42,7 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute(f'SELECT admin_name FROM admins WHERE admin_id = {admin_id}').fetchmany(1)[0][0]
 
-    def add_ad(self, user_name, product_name, amount, price, town, picture_id, user_id, description, posted = False):
+    def add_ad(self, user_name, product_name, amount, price, town, picture_id, user_id, description, posted=False):
         posted = posted or False
         with self.connection:
             return self.cursor.execute(
@@ -58,7 +58,7 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute(f'DELETE FROM ads WHERE `ad_id` = {ad_id}')
 
-    def update_ad_status(self, ad_id, posted_status = True):
+    def update_ad_status(self, ad_id, posted_status=True):
         with self.connection:
             return self.cursor.execute(f'UPDATE ads SET posted = {posted_status} WHERE ad_id = {ad_id}')
 
@@ -66,19 +66,10 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute(f'UPDATE ads SET post_id = {post_id} WHERE ad_id = {ad_id}')
 
-    # def add_posted_ad(self, user_name, product_name, product_amount, product_price, town, picture_id, user_id, description, post_id):
-    #     with self.connection:
-    #         return self.cursor.execute(f'INSERT INTO posted_ads (user_name, product_name, product_amount, product_price, town, picture_id, user_id, description) '
-    #                                    f'VALUES(?,?,?,?,?,?,?,?)', (user_name, product_name, product_amount, product_price, town, picture_id, user_id, description))
-    #
-    # def get_posted_ads(self):
-    #     with self.connection:
-    #         return self.cursor.execute("SELECT * FROM `ad_for_add`").fetchall()
-    #
-    # def del_posted_ad(self, ad_id):
-    #     with self.connection:
-    #         return self.cursor.execute(f'DELETE FROM ad_for_add WHERE `ad_id` = {ad_id}')
+    def get_posted_ads(self):
+        with self.connection:
+            return self.cursor.execute("SELECT * FROM `ads` WHERE posted = 1").fetchall()
 
     def close(self):
+        logging.info("БАЗА ДАННЫХ ВЫКЛЮЧЕНА")
         self.connection.close()
-# i love u
