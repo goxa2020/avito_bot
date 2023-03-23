@@ -19,7 +19,7 @@ async def start_message(message: types.Message):
                     await bot.send_message(admin_invite, f'Через вашу ссылку человек '
                                                          f'({message.from_user.first_name}) получил права админа')
                 except aiogram.utils.exceptions.ChatNotFound:
-                    message.answer('Что-то не получилось, попробуйте позже')
+                    await message.answer('Что-то не получилось, попробуйте позже')
                 else:
                     try:
                         db.add_admin(message.from_user.id, admin_invite, message.from_user.first_name)

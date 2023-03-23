@@ -13,12 +13,12 @@ async def admin_ref(message: types.Message):
 
 
 def adminMenuProfile() -> ReplyKeyboardMarkup():
-    admin_Menu = ReplyKeyboardMarkup(resize_keyboard=True)
+    admin_menu = ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = KeyboardButton('Добавить админа')
     btn2 = KeyboardButton('Мои админы')
     btn3 = KeyboardButton('Назад')
-    admin_Menu.add(btn1).add(btn2).add(btn3)
-    return admin_Menu
+    admin_menu.add(btn1).add(btn2).add(btn3)
+    return admin_menu
 
 
 def my_admins_text(user_id: int) -> str:
@@ -54,8 +54,7 @@ def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
     return inline_kb
 
 
-async def show_ad(user_id, ad_index = None):
-
+async def show_ad(user_id, ad_index=None):
     ad_index = ad_index or 0
 
     ads = db.get_ads()
@@ -63,14 +62,13 @@ async def show_ad(user_id, ad_index = None):
     not_posted_ads = [ad for ad in ads if not ad[10]]
 
     if not len(not_posted_ads):
-
         return await bot.send_message(user_id, 'Нет объявлений на рассмотрении', reply_markup=mainMenu(user_id))
 
     ad_index = int(ad_index % len(ads))
 
     ad = ads[ad_index]
 
-    text = f"Объявление {ad_index+1} из {len(ads)}\n" \
+    text = f"Объявление {ad_index + 1} из {len(ads)}\n" \
            f"Имя: {ad[1]}\n" \
            f"Название товара: {ad[2]}\n" \
            f"Количество: {ad[3]}\n" \
@@ -79,13 +77,13 @@ async def show_ad(user_id, ad_index = None):
            f"Описание: {ad[7]}\n"
 
     inline_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showAd_{ad_index-1}')
-    inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index+1}')
+    inline_btn1 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showAd_{ad_index - 1}')
+    inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index + 1}')
     inline_btn3 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
     inline_btn4 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
     inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4)
 
     if ad[5]:
-        return await bot.send_photo(chat_id = user_id, photo = ad[8], caption = text, reply_markup=inline_kb)
+        return await bot.send_photo(chat_id=user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
 
-    return await bot.send_photo(chat_id = user_id, photo = no_photo, caption = text, reply_markup=inline_kb)
+    return await bot.send_photo(chat_id=user_id, photo=no_photo, caption=text, reply_markup=inline_kb)

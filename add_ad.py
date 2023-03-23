@@ -1,12 +1,11 @@
 # Это конечный автомат для добавления объявлений
 
-import logging
-from sqlighter import Sqlighter
-from loader import dp, db, bot
+# import logging
+from loader import db, bot
 from markups import *
-from aiogram import Bot, types
+from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from aiogram.dispatcher import Dispatcher, FSMContext
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 

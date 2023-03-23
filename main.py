@@ -5,25 +5,26 @@ import message_handlers
 from add_ad import *
 
 
-def register_handlers(dp):
+def register_handlers(dispatcher):
     """
     Это аналоги @dp.message_handler(), только собранные в одном месте
     """
-    dp.register_message_handler(name_entered, state=Add_ad.waiting_for_name)
-    dp.register_message_handler(product_name_chosen, state=Add_ad.waiting_for_product_name)
-    dp.register_message_handler(product_amount_chosen, state=Add_ad.waiting_for_product_amount)
-    dp.register_message_handler(product_price_chosen, state=Add_ad.waiting_for_product_price)
-    dp.register_message_handler(town_chosen, state=Add_ad.waiting_for_town)
-    dp.register_message_handler(picture_chosen, state=Add_ad.waiting_for_picture, content_types=['text', 'photo'])
-    dp.register_message_handler(description_chosen, state=Add_ad.waiting_for_description)
-    dp.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
+    dispatcher.register_message_handler(name_entered, state=Add_ad.waiting_for_name)
+    dispatcher.register_message_handler(product_name_chosen, state=Add_ad.waiting_for_product_name)
+    dispatcher.register_message_handler(product_amount_chosen, state=Add_ad.waiting_for_product_amount)
+    dispatcher.register_message_handler(product_price_chosen, state=Add_ad.waiting_for_product_price)
+    dispatcher.register_message_handler(town_chosen, state=Add_ad.waiting_for_town)
+    dispatcher.register_message_handler(picture_chosen, state=Add_ad.waiting_for_picture,
+                                        content_types=['text', 'photo'])
+    dispatcher.register_message_handler(description_chosen, state=Add_ad.waiting_for_description)
+    dispatcher.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
 
 
 async def start_on(_):
     """
     Функция вызывается при старте бота
     """
-    register_handlers(dp)  # Регестрируем message handler`ы
+    register_handlers(dp)  # Регистрируем message handler`ы
 
 
 async def on_shutdown(_):

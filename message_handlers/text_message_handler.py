@@ -1,10 +1,9 @@
-import aiogram.utils.exceptions
 from aiogram import types
 from markups import mainMenu
-from loader import dp, db, bot
-import logging
+from loader import dp, db
 from admin import *
 from add_ad import ad_start
+# import logging
 
 
 @dp.message_handler(content_types=['text'])
@@ -20,8 +19,7 @@ async def all_messages(message: types.Message):
                 await message.answer('Вы не имеете доступа к этой команде')
         elif message.text == 'Мои админы':
             if is_admin:
-                await bot.send_message(message.from_user.id, my_admins_text(message.from_user.id),
-                                       reply_markup=my_admins_kb(message.from_user.id))
+                await message.answer(my_admins_text(message.chat.id), reply_markup=my_admins_kb(message.from_user.id))
             else:
                 await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
         elif message.text == 'Управление админами':
