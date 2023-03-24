@@ -12,7 +12,7 @@ async def admin_ref(message: types.Message):
                          f'Будь осторожен, не передовай эту ссылку неизвестным людям')
 
 
-def adminMenuProfile() -> ReplyKeyboardMarkup():
+def admin_menu_profile() -> ReplyKeyboardMarkup():
     admin_menu = ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = KeyboardButton('Добавить админа')
     btn2 = KeyboardButton('Мои админы')

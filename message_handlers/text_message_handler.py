@@ -1,7 +1,7 @@
 from aiogram import types
 from markups import mainMenu
 from loader import dp, db
-from admin import *
+from admin import admin_ref, my_admins_text, my_admins_kb, admin_menu_profile, show_ad
 from add_ad import ad_start
 # import logging
 
@@ -24,7 +24,7 @@ async def all_messages(message: types.Message):
                 await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
         elif message.text == 'Управление админами':
             if is_admin:
-                await message.answer('Управление:', reply_markup=adminMenuProfile())
+                await message.answer('Управление:', reply_markup=admin_menu_profile())
             else:
                 await message.answer('У вас нет доступа к этой команде', reply_markup=mainMenu(message.from_user.id))
         elif message.text == 'Управление объявлениями':

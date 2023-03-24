@@ -1,8 +1,9 @@
 # Это конечный автомат для добавления объявлений
-
+__all__ = {'Add_ad', 'name_entered', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
+           'town_chosen', 'picture_chosen', 'description_chosen', 'confirm_chosen'}
 # import logging
 from loader import db, bot
-from markups import *
+from markups import mainMenu, cancel_kb
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.dispatcher import FSMContext
@@ -153,13 +154,16 @@ async def description_chosen(message: types.Message, state: FSMContext):
     ad = ad_dict[chat_id]
     ad.description = message.text
 
+    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    keyboard.add('Подтвердить', 'Отмена')
+
     await message.answer(f'Подтвердите пожалуйста\n'
                          f'Имя: {ad.name}\n'
                          f'Название товара: {ad.product_name}\n'
                          f'Количество товара: {ad.product_amount}\n'
                          f'Цена: {ad.product_price}\n'
                          f'Город: {ad.town}\n'
-                         f'Описание: {ad.description}', reply_markup=confirm_ad_kb())
+                         f'Описание: {ad.description}', reply_markup=keyboard)
 
     await Add_ad.next()
 

@@ -1,4 +1,3 @@
-from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from loader import db
@@ -24,10 +23,4 @@ def adminMenu(keyboard: ReplyKeyboardMarkup()) -> ReplyKeyboardMarkup():
 def cancel_kb() -> ReplyKeyboardMarkup():
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     keyboard.add('Отмена')
-    return keyboard
-
-
-def confirm_ad_kb() -> ReplyKeyboardMarkup():
-    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    keyboard.add('Подтвердить', 'Отмена')
     return keyboard

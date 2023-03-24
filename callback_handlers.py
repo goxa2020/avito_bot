@@ -1,11 +1,11 @@
 """
 Модуль, отвечающий за обработку нажатий inline кнопкок в сообщениях
 """
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from admin import my_admins_kb, my_admins_text, confirm_del_admin_kb, show_ad
+from config import no_photo, chanel_name
 from loader import dp, db, bot
 from aiogram import types
-from markups import *
-from admin import *
-from config import no_photo, chanel_name
 import logging
 
 
