@@ -70,6 +70,10 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute("SELECT * FROM `ads` WHERE posted = 1").fetchall()
 
+    def get_not_posted_ads(self):
+        with self.connection:
+            return self.cursor.execute("SELECT * FROM `ads` WHERE posted = 0").fetchall()
+
     def close(self):
         logging.info("БАЗА ДАННЫХ ВЫКЛЮЧЕНА")
         self.connection.close()

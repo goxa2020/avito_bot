@@ -17,10 +17,10 @@ async def callback(callback_query: types.CallbackQuery):
     admin_name = db.get_admin_name(del_id)
 
     await bot.edit_message_text(f'Точно удалить {admin_name}', callback_query.from_user.id,
-                                callback_query.message.message_id, reply_markup=accept_del_admin_kb(del_id))
+                                callback_query.message.message_id, reply_markup=confirm_del_admin_kb(del_id))
 
 
-@dp.callback_query_handler(text_contains="acceptCallDelAdm_")
+@dp.callback_query_handler(text_contains="confirmCallDelAdm_")
 async def callback(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
     user_id = callback_query.from_user.id
@@ -28,7 +28,8 @@ async def callback(callback_query: types.CallbackQuery):
     try:
         if db.user_is_admin(del_id):
             db.del_admin(del_id)
-    except Exception:
+    except Exception as e:
+        logging.error(e)
         await bot.edit_message_text('Что-то не получилось', callback_query.from_user.id,
                                     callback_query.message.message_id)
         await bot.send_message(user_id, my_admins_text(user_id), reply_markup=my_admins_kb(user_id))
@@ -60,17 +61,17 @@ async def callback(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
 
     ad_index = int(callback_query.data.split("_")[1])
-    ads = db.get_ads()
+    ads = db.get_not_posted_ads()
 
     ad_index = int(ad_index % len(ads))
     ad = ads[ad_index]
 
     text = f"Объявление {ad_index + 1} из {len(ads)}\n" \
-           f"Имя: {ad[0]}\n" \
-           f"Название товара: {ad[1]}\n" \
-           f"Количество: {ad[2]}\n" \
-           f"Цена: {ad[3]}\n" \
-           f"Город: {ad[4]}\n" \
+           f"Имя: {ad[1]}\n" \
+           f"Название товара: {ad[2]}\n" \
+           f"Количество: {ad[3]}\n" \
+           f"Цена: {ad[4]}\n" \
+           f"Город: {ad[5]}\n" \
            f"Описание: {ad[7]}\n"
 
     inline_kb = InlineKeyboardMarkup()
@@ -78,24 +79,26 @@ async def callback(callback_query: types.CallbackQuery):
     inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index + 1}')
     inline_btn3 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
     inline_btn4 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
-    inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4)
 
-    if ad[5]:
+    if len(ads) > 1:
+        inline_kb.row(inline_btn1, inline_btn2)
 
-        photo = types.InputMediaPhoto(ad[5], caption=text)
+    inline_kb.row(inline_btn3, inline_btn4)
 
-        return await bot.edit_message_media(chat_id=callback_query.from_user.id,
-                                            message_id=callback_query.message.message_id,
-                                            reply_markup=inline_kb,
-                                            media=photo)
-    else:
-
-        photo = types.InputMediaPhoto(no_photo, caption=text)
+    if ad[8]:
+        photo = types.InputMediaPhoto(ad[8], caption=text)
 
         return await bot.edit_message_media(chat_id=callback_query.from_user.id,
                                             message_id=callback_query.message.message_id,
                                             reply_markup=inline_kb,
                                             media=photo)
+
+    photo = types.InputMediaPhoto(no_photo, caption=text)
+
+    return await bot.edit_message_media(chat_id=callback_query.from_user.id,
+                                        message_id=callback_query.message.message_id,
+                                        reply_markup=inline_kb,
+                                        media=photo)
 
 
 @dp.callback_query_handler(text_contains="deleteAd_")
@@ -104,16 +107,16 @@ async def callback(callback_query: types.CallbackQuery):
 
     ad_index = int(callback_query.data.split("_")[1])
 
-    accept_del_ad_keyboard = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'acceptDelAd_{ad_index}')
+    confirm_del_ad_keyboard = InlineKeyboardMarkup()
+    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmDelAd_{ad_index}')
     inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelDelAd')
-    accept_del_ad_keyboard.add(inline_btn1).add(inline_btn2)
+    confirm_del_ad_keyboard.add(inline_btn1).add(inline_btn2)
 
     await bot.send_message(callback_query.from_user.id, 'Точно удалить это объявление',
-                           reply_markup=accept_del_ad_keyboard)
+                           reply_markup=confirm_del_ad_keyboard)
 
 
-@dp.callback_query_handler(text_contains="acceptDelAd_")
+@dp.callback_query_handler(text_contains="confirmDelAd_")
 async def callback(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
 
@@ -123,13 +126,15 @@ async def callback(callback_query: types.CallbackQuery):
 
     ad = ads[ad_index]
 
-    ad_id = ad[8]
+    ad_id = ad[0]
 
     try:
 
         db.del_ad(ad_id)
 
-    except Exception:
+    except Exception as e:
+
+        logging.error(e)
 
         await bot.edit_message_text('Что-то не получилось',
                                     callback_query.from_user.id,
@@ -148,7 +153,7 @@ async def callback(callback_query: types.CallbackQuery):
 
         try:
 
-            await bot.send_message(ad[6], f'Администратор отклонил вашу запись с товаром {ad[1]}')
+            await bot.send_message(ad[6], f'Администратор отклонил вашу запись с товаром {ad[2]}')
 
         except Exception as e:
 
@@ -173,16 +178,16 @@ async def callback(callback_query: types.CallbackQuery):
     #
     # ad = ads[ad_index]
 
-    accept_publish_ad_keyboard = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'acceptPublishAd_{ad_index}')
+    confirm_publish_ad_keyboard = InlineKeyboardMarkup()
+    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmPublishAd_{ad_index}')
     inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelPublishAd')
-    accept_publish_ad_keyboard.add(inline_btn1).add(inline_btn2)
+    confirm_publish_ad_keyboard.add(inline_btn1).add(inline_btn2)
 
     await bot.send_message(callback_query.from_user.id, 'Точно опубликовать это объявление на канал',
-                           reply_markup=accept_publish_ad_keyboard)
+                           reply_markup=confirm_publish_ad_keyboard)
 
 
-@dp.callback_query_handler(text_contains="acceptPublishAd_")
+@dp.callback_query_handler(text_contains="confirmPublishAd_")
 async def callback(callback_query: types.CallbackQuery):
     await bot.answer_callback_query(callback_query.id)
 

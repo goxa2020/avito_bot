@@ -17,7 +17,7 @@ class Add_ad(StatesGroup):
     waiting_for_town = State()
     waiting_for_picture = State()
     waiting_for_description = State()
-    waiting_for_accept = State()
+    waiting_for_confirm = State()
 
 
 ad_dict = {}
@@ -159,12 +159,12 @@ async def description_chosen(message: types.Message, state: FSMContext):
                          f'Количество товара: {ad.product_amount}\n'
                          f'Цена: {ad.product_price}\n'
                          f'Город: {ad.town}\n'
-                         f'Описание: {ad.description}', reply_markup=accept_ad_kb())
+                         f'Описание: {ad.description}', reply_markup=confirm_ad_kb())
 
     await Add_ad.next()
 
 
-async def accept_chosen(message: types.Message, state: FSMContext):
+async def confirm_chosen(message: types.Message, state: FSMContext):
     if message.text == 'Подтвердить':
         await state.finish()
         chat_id = message.from_user.id

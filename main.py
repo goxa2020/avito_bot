@@ -17,7 +17,7 @@ def register_handlers(dispatcher):
     dispatcher.register_message_handler(picture_chosen, state=Add_ad.waiting_for_picture,
                                         content_types=['text', 'photo'])
     dispatcher.register_message_handler(description_chosen, state=Add_ad.waiting_for_description)
-    dispatcher.register_message_handler(accept_chosen, state=Add_ad.waiting_for_accept)
+    dispatcher.register_message_handler(confirm_chosen, state=Add_ad.waiting_for_confirm)
 
 
 async def start_on(_):
@@ -36,4 +36,3 @@ async def on_shutdown(_):
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True, on_startup=start_on, on_shutdown=on_shutdown)  # Запускаем бота
-    # люблю

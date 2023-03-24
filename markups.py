@@ -27,7 +27,7 @@ def cancel_kb() -> ReplyKeyboardMarkup():
     return keyboard
 
 
-def accept_ad_kb() -> ReplyKeyboardMarkup():
+def confirm_ad_kb() -> ReplyKeyboardMarkup():
     keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     keyboard.add('Подтвердить', 'Отмена')
     return keyboard

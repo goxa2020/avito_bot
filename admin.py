@@ -46,9 +46,9 @@ def my_admins_kb(user_id) -> InlineKeyboardMarkup():
     return inline_kb
 
 
-def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
+def confirm_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
     inline_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'acceptCallDelAdm_{admin_id}')
+    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmCallDelAdm_{admin_id}')
     inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelCallDelAdm_{admin_id}')
     inline_kb.add(inline_btn1).add(inline_btn2)
     return inline_kb
@@ -57,11 +57,10 @@ def accept_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
 async def show_ad(user_id, ad_index=None):
     ad_index = ad_index or 0
 
-    ads = db.get_ads()
+    ads = db.get_not_posted_ads()
+    print(ads)
 
-    not_posted_ads = [ad for ad in ads if not ad[10]]
-
-    if not len(not_posted_ads):
+    if not len(ads):
         return await bot.send_message(user_id, 'Нет объявлений на рассмотрении', reply_markup=mainMenu(user_id))
 
     ad_index = int(ad_index % len(ads))
@@ -81,9 +80,12 @@ async def show_ad(user_id, ad_index=None):
     inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index + 1}')
     inline_btn3 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
     inline_btn4 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
-    inline_kb.row(inline_btn1, inline_btn2).row(inline_btn3, inline_btn4)
 
-    if ad[5]:
+    if len(ads) > 1:
+        inline_kb.row(inline_btn1, inline_btn2)
+    inline_kb.row(inline_btn3, inline_btn4)
+
+    if ad[8]:
         return await bot.send_photo(chat_id=user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
 
     return await bot.send_photo(chat_id=user_id, photo=no_photo, caption=text, reply_markup=inline_kb)
