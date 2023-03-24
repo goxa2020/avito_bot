@@ -1,8 +1,7 @@
 from aiogram.utils import executor
+from message_handlers.register_handlers import register_handlers
 from loader import db, dp
 import callback_handlers
-import message_handlers
-from message_handlers.register_handlers import register_handlers
 
 
 async def start_on(_):

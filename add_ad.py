@@ -1,6 +1,6 @@
 # Это конечный автомат для добавления объявлений
-__all__ = {'Add_ad', 'name_entered', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
-           'town_chosen', 'picture_chosen', 'description_chosen', 'confirm_chosen'}
+__all__ = ('Add_ad', 'name_entered', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
+           'town_chosen', 'picture_chosen', 'description_chosen', 'confirm_chosen')
 # import logging
 from loader import db, bot
 from markups import mainMenu, cancel_kb

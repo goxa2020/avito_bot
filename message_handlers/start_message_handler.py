@@ -1,11 +1,10 @@
 import aiogram.utils.exceptions
 from aiogram import types
 from markups import mainMenu
-from loader import dp, db, bot
+from loader import db, bot
 import logging
 
 
-@dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
     if message.chat.type == 'private':
         admin_invited = ('adm' in message.text)

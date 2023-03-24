@@ -228,8 +228,6 @@ async def callback(callback_query: types.CallbackQuery):
     else:
         message_id = message.message_id
 
-        print(message_id)
-
         db.update_ad_post_id(ad[0], message_id)
 
         db.update_ad_status(ad[0])

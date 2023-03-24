@@ -58,7 +58,6 @@ async def show_ad(user_id, ad_index=None):
     ad_index = ad_index or 0
 
     ads = db.get_not_posted_ads()
-    print(ads)
 
     if not len(ads):
         return await bot.send_message(user_id, 'Нет объявлений на рассмотрении', reply_markup=mainMenu(user_id))
