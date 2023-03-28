@@ -6,7 +6,7 @@ class Sqlighter:
     def __init__(self, database_file):
         self.connection = sqlite3.connect(database_file, check_same_thread=False)
         self.cursor = self.connection.cursor()
-        logging.info("Подключение к базе данных успешно".upper())
+        logging.info("Database connection successful.")
 
     def add_user(self, user_id):
         with self.connection:
@@ -50,7 +50,7 @@ class Sqlighter:
                 f'VALUES(?,?,?,?,?,?,?,?,?)',
                 (user_name, product_name, amount, price, town, picture_id, user_id, description, posted))
 
-    def get_ads(self):
+    def get_all_ads(self):
         with self.connection:
             return self.cursor.execute("SELECT * FROM `ads`").fetchall()
 
@@ -74,6 +74,10 @@ class Sqlighter:
         with self.connection:
             return self.cursor.execute("SELECT * FROM `ads` WHERE posted = 0").fetchall()
 
+    def get_user_ads(self, user_id):
+        with self.connection:
+            return self.cursor.execute(f"SELECT * FROM `ads` WHERE user_id = {user_id}").fetchall()
+
     def close(self):
-        logging.info("БАЗА ДАННЫХ ВЫКЛЮЧЕНА")
-        self.connection.close()
+        logging.info('Database shutdown')
+        return self.connection.close()

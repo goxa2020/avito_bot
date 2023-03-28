@@ -24,7 +24,7 @@ async def confirm_delete_ad(callback_query: types.CallbackQuery):
 
     ad_index = int(callback_query.data.split("_")[1])
 
-    ads = db.get_ads()
+    ads = db.get_not_posted_ads()
 
     ad = ads[ad_index]
 

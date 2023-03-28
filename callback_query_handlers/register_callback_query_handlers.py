@@ -1,3 +1,5 @@
+import logging
+
 from aiogram.dispatcher import Dispatcher
 from callback_query_handlers.delete_admin import delete_admin, confirm_delete_admin, cancel_delete_admin
 from callback_query_handlers.show_ad import show_ad
@@ -20,3 +22,5 @@ def register_callback_query_handler(dispatcher: Dispatcher):
     dispatcher.register_callback_query_handler(publish_ad, text_contains=["publishAd_"])
     dispatcher.register_callback_query_handler(confirm_publish_ad, text_contains=["confirmPublishAd_"])
     dispatcher.register_callback_query_handler(cancel_publish_ad, text_contains=["cancelPublishAd"])
+
+    logging.info('Callback query handlers registered.')

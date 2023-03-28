@@ -1,15 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram import types
-from config import Bot_name, no_photo
+from config import no_photo
 from loader import db, bot
 from markups import mainMenu
-
-
-async def admin_ref(message: types.Message):
-    await message.answer(f'Твоя ссылка для назначения админа⬇\n'
-                         f'https://t.me/{Bot_name}?start=adm{str(message.from_user.id)[::-1]}\n'
-                         f'Человек должен перейти по ней и нажать "Старт", чтобы стать админом\n'
-                         f'Будь осторожен, не передовай эту ссылку неизвестным людям')
 
 
 def admin_menu_profile() -> ReplyKeyboardMarkup():
@@ -43,14 +35,6 @@ def my_admins_kb(user_id) -> InlineKeyboardMarkup():
         inline_btn = InlineKeyboardButton(f'Лишить админки {name}',
                                           callback_data=f'callDelAdm_{my_admins[my_admins_names.index(name)]}')
         inline_kb.add(inline_btn)
-    return inline_kb
-
-
-def confirm_del_admin_kb(admin_id) -> InlineKeyboardMarkup():
-    inline_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmCallDelAdm_{admin_id}')
-    inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelCallDelAdm_{admin_id}')
-    inline_kb.add(inline_btn1).add(inline_btn2)
     return inline_kb
 
 
