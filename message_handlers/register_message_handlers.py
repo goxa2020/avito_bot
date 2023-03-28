@@ -4,7 +4,7 @@ from aiogram.dispatcher import Dispatcher
 from message_handlers.start_message_handler import start_message
 from message_handlers.help_message_handler import help_message
 from message_handlers.text_message_handler import all_messages
-from ad_гtils.add_ad import *
+from ad_utils.add_ad import *
 
 
 def register_handlers(dispatcher: Dispatcher):
