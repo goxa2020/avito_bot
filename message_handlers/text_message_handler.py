@@ -9,7 +9,6 @@ from config import Bot_name
 # import logging
 
 
-@dp.message_handler(content_types=['text'])
 async def all_messages(message: types.Message):
     # if message.chat.type == 'supergroup':
     #     pass

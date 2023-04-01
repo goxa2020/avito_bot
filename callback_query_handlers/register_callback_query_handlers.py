@@ -5,7 +5,7 @@ from callback_query_handlers.admin_menu_callback_queries.delete_admin import del
 from callback_query_handlers.admin_menu_callback_queries.publish_ad import publish_ad, confirm_publish_ad, cancel_publish_ad
 from callback_query_handlers.admin_menu_callback_queries.detele_ad import delete_ad, confirm_delete_ad, cancel_delete_ad
 from callback_query_handlers.admin_menu_callback_queries.show_ad import show_ad
-from callback_query_handlers.user_callback_queries.show_ad_to_user import show_ad_to_user
+from callback_query_handlers.user_callback_queries.show_ad_to_user_handler import show_ad_to_user
 
 
 def register_callback_query_handler(dispatcher: Dispatcher):
