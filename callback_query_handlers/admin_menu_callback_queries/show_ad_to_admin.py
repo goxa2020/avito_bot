@@ -1,11 +1,12 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types
-from loader import db, bot
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
 from config import no_photo
+from loader import db, bot
 
 
-async def show_ad(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+async def show_ad_to_admin(callback_query: types.CallbackQuery):
+    await callback_query.answer()
 
     ad_index = int(callback_query.data.split("_")[1])
     ads = db.get_not_posted_ads()

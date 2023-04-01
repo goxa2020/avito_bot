@@ -6,7 +6,7 @@ import logging
 
 
 async def delete_ad(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+    await callback_query.answer()
 
     ad_index = int(callback_query.data.split("_")[1])
 
@@ -20,7 +20,7 @@ async def delete_ad(callback_query: types.CallbackQuery):
 
 
 async def confirm_delete_ad(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+    await callback_query.answer()
 
     ad_index = int(callback_query.data.split("_")[1])
 
@@ -63,7 +63,7 @@ async def confirm_delete_ad(callback_query: types.CallbackQuery):
 
 
 async def cancel_delete_ad(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+    await callback_query.answer()
 
     await bot.edit_message_text(f'Объявление цело и невредимо',
                                 callback_query.from_user.id,

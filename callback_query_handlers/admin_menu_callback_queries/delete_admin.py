@@ -6,7 +6,7 @@ import logging
 
 
 async def delete_admin(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+    await callback_query.answer()
 
     del_id = callback_query.data.split("_")[1]
     admin_name = db.get_admin_name(del_id)
@@ -21,7 +21,7 @@ async def delete_admin(callback_query: types.CallbackQuery):
 
 
 async def confirm_delete_admin(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+    await callback_query.answer()
     user_id = callback_query.from_user.id
     del_id = callback_query.data.split("_")[1]
     try:
@@ -44,7 +44,7 @@ async def confirm_delete_admin(callback_query: types.CallbackQuery):
 
 
 async def cancel_delete_admin(callback_query: types.CallbackQuery):
-    await bot.answer_callback_query(callback_query.id)
+    await callback_query.answer()
 
     user_id = callback_query.from_user.id
 

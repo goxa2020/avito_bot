@@ -12,6 +12,7 @@ async def send_user_ads(message: types.Message):
         text = 'Ваше объявление:\n'
     else:
         text = 'У вас ещё нет объявлений'
+        return await message.answer(text)
 
     max_len_name = len(max([ad[2] for ad in user_ads], key=len))
 

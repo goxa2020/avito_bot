@@ -1,5 +1,4 @@
 from aiogram import types
-from loader import dp
 
 
 async def help_message(message: types.Message):
