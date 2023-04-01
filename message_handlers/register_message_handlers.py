@@ -26,6 +26,6 @@ def register_handlers(dispatcher: Dispatcher):
 
     dispatcher.register_message_handler(start_message, commands='start')
     dispatcher.register_message_handler(help_message, commands='help')
-    dispatcher.register_message_handler(all_messages, content_types='text')
+    dispatcher.register_message_handler(all_messages, content_types='any')
 
     logging.info('Message handlers registered.')

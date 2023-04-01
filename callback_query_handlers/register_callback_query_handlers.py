@@ -10,20 +10,20 @@ from callback_query_handlers.user_callback_queries.show_ad_to_user_handler impor
 
 def register_callback_query_handler(dispatcher: Dispatcher):
 
-    dispatcher.register_callback_query_handler(delete_admin, text_contains="callDelAdm_")
-    dispatcher.register_callback_query_handler(confirm_delete_admin, text_contains="confirmCallDelAdm_")
-    dispatcher.register_callback_query_handler(cancel_delete_admin, text_contains="cancelCallDelAdm_")
+    dispatcher.register_callback_query_handler(delete_admin, text_contains="callDelAdm")
+    dispatcher.register_callback_query_handler(confirm_delete_admin, text_contains="confirmCallDelAdm")
+    dispatcher.register_callback_query_handler(cancel_delete_admin, text_contains="cancelCallDelAdm")
 
-    dispatcher.register_callback_query_handler(publish_ad, text_contains="publishAd_")
-    dispatcher.register_callback_query_handler(confirm_publish_ad, text_contains="confirmPublishAd_")
+    dispatcher.register_callback_query_handler(publish_ad, text_contains="publishAd")
+    dispatcher.register_callback_query_handler(confirm_publish_ad, text_contains="confirmPublishAd")
     dispatcher.register_callback_query_handler(cancel_publish_ad, text_contains="cancelPublishAd")
 
-    dispatcher.register_callback_query_handler(delete_ad, text_contains="deleteAd_")
-    dispatcher.register_callback_query_handler(confirm_delete_ad, text_contains="confirmDelAd_")
+    dispatcher.register_callback_query_handler(delete_ad, text_contains="deleteAd")
+    dispatcher.register_callback_query_handler(confirm_delete_ad, text_contains="confirmDelAd")
     dispatcher.register_callback_query_handler(cancel_delete_ad, text_contains="cancelDelAd")
 
-    dispatcher.register_callback_query_handler(show_ad_to_admin, text_contains="showAd_")
+    dispatcher.register_callback_query_handler(show_ad_to_admin, text_contains="showAd")
 
-    dispatcher.register_callback_query_handler(show_ad_to_user, text_contains="show_ad_to_user")
+    dispatcher.register_callback_query_handler(show_ad_to_user, text_contains="showUsersAd")
 
     logging.info('Callback query handlers registered.')
