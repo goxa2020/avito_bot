@@ -1,11 +1,12 @@
 import logging
 
 from aiogram.dispatcher import Dispatcher
-from callback_query_handlers.admin_menu_callback_queries.delete_admin import delete_admin, confirm_delete_admin, cancel_delete_admin
-from callback_query_handlers.admin_menu_callback_queries.publish_ad import publish_ad, confirm_publish_ad, cancel_publish_ad
-from callback_query_handlers.admin_menu_callback_queries.detele_ad import delete_ad, confirm_delete_ad, cancel_delete_ad
-from callback_query_handlers.admin_menu_callback_queries.show_ad_to_admin import show_ad_to_admin
-from callback_query_handlers.user_callback_queries.show_ad_to_user_handler import show_ad_to_user
+from callback_query_handlers.admin_menu_callback_queries.delete_admin_handler import delete_admin, confirm_delete_admin, cancel_delete_admin
+from callback_query_handlers.admin_menu_callback_queries.publish_ad_handler import publish_ad, confirm_publish_ad, cancel_publish_ad
+from callback_query_handlers.admin_menu_callback_queries.detele_ad_handler import delete_ad, confirm_delete_ad, cancel_delete_ad
+from callback_query_handlers.admin_menu_callback_queries.show_ad_to_admin_handler import show_ad_to_admin
+from callback_query_handlers.user_callback_queries.show_ad_to_user_handler import show_ad_to_user_handler
+from callback_query_handlers.user_callback_queries.delete_my_ad_handler import delete_users_ad, confirm_delete_users_ad
 
 
 def register_callback_query_handler(dispatcher: Dispatcher):
@@ -24,6 +25,8 @@ def register_callback_query_handler(dispatcher: Dispatcher):
 
     dispatcher.register_callback_query_handler(show_ad_to_admin, text_contains="showAd")
 
-    dispatcher.register_callback_query_handler(show_ad_to_user, text_contains="showUsersAd")
+    dispatcher.register_callback_query_handler(show_ad_to_user_handler, text_contains="showUsersAd")
+    dispatcher.register_callback_query_handler(delete_users_ad, text_contains="deleteUsersAd")
+    dispatcher.register_callback_query_handler(confirm_delete_users_ad, text_contains="confirmDeleteUsersAd_")
 
     logging.info('Callback query handlers registered.')

@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from config import no_photo
+from config import no_photo_id
 from loader import db, bot
 
 
@@ -41,7 +41,7 @@ async def show_ad_to_admin(callback_query: types.CallbackQuery):
                                             reply_markup=inline_kb,
                                             media=photo)
 
-    photo = types.InputMediaPhoto(no_photo, caption=text)
+    photo = types.InputMediaPhoto(no_photo_id, caption=text)
 
     return await bot.edit_message_media(chat_id=callback_query.from_user.id,
                                         message_id=callback_query.message.message_id,

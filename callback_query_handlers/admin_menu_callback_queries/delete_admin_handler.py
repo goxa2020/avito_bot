@@ -40,7 +40,7 @@ async def confirm_delete_admin(callback_query: types.CallbackQuery):
         try:
             await bot.send_message(del_id, 'Вас лишили прав администратора')
         except Exception as e:
-            logging.info(e)
+            logging.info(f'Не получилось написать удалённому админу, {e}')
 
 
 async def cancel_delete_admin(callback_query: types.CallbackQuery):

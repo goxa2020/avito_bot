@@ -1,7 +1,18 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from config import no_photo
+from config import no_photo_id, Bot_name
 from loader import db, bot
 from markups import mainMenu
+
+
+async def not_access(user_id):
+    return await bot.send_message(user_id, 'У вас нет доступа к этой команде', reply_markup=mainMenu(user_id))
+
+
+def add_admin_text(user_id):
+    return f'Твоя ссылка для назначения админа⬇\n'\
+           f'https://t.me/{Bot_name}?start=adm{str(user_id)[::-1]}\n'\
+           f'Человек должен перейти по ней и нажать "Старт", чтобы стать админом\n'\
+           f'Будь осторожен, не передовай эту ссылку неизвестным людям'
 
 
 def admin_menu_profile() -> ReplyKeyboardMarkup():
@@ -15,12 +26,12 @@ def admin_menu_profile() -> ReplyKeyboardMarkup():
 
 def my_admins_text(user_id: int) -> str:
     admins = db.get_admins()
-    my_admins = [admin[0] for admin in admins if int(admin[1]) == user_id]
-    my_admins_names = [admin[2] for admin in admins if admin[0] in my_admins]
+    my_admins = [admin for admin in admins if int(admin[1]) == user_id]
+    my_admins_names = [admin[2] for admin in my_admins]
     if len(my_admins) > 0:
         text = 'Админы, добавленные вами:\n'
         for i in range(len(my_admins)):
-            text += f'{i + 1}: {my_admins_names[i]}, ID: {my_admins[i]}\n'
+            text += f'{i + 1}: {my_admins_names[i]}, ID: {my_admins[i][0]}\n'
     else:
         text = 'У вас нет ниодного добавленного админа'
     return text
@@ -73,4 +84,4 @@ async def show_ad(user_id, ad_index=None):
     if ad[8]:
         return await bot.send_photo(chat_id=user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
 
-    return await bot.send_photo(chat_id=user_id, photo=no_photo, caption=text, reply_markup=inline_kb)
+    return await bot.send_photo(chat_id=user_id, photo=no_photo_id, caption=text, reply_markup=inline_kb)

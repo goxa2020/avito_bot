@@ -10,7 +10,7 @@ class Sqlighter:
 
     def add_user(self, user_id):
         with self.connection:
-            return self.cursor.execute(f'INSERT INTO users (user_id) VALUES({user_id})')
+            return self.cursor.execute(f'INSERT INTO users (user_id) VALUES(?)', (user_id,))
 
     def get_users(self):
         with self.connection:
@@ -18,7 +18,7 @@ class Sqlighter:
 
     def user_is_admin(self, user_id):
         with self.connection:
-            return bool(len(self.cursor.execute(f'SELECT * FROM admins WHERE admin_id = {user_id}').fetchmany(1)))
+            return bool(len(self.cursor.execute(f'SELECT * FROM admins WHERE admin_id = ?', (user_id,)).fetchmany(1)))
 
     def user_exists(self, user_id):
         with self.connection:
@@ -36,14 +36,23 @@ class Sqlighter:
 
     def del_admin(self, admin_id):
         with self.connection:
-            return self.cursor.execute(f'DELETE FROM admins WHERE `admin_id` = {admin_id}')
+            return self.cursor.execute(f'DELETE FROM admins WHERE `admin_id` = ?', (admin_id,))
+
+    def admin_exists(self, admin_id):
+        with self.connection:
+            result = self.cursor.execute("SELECT * FROM `admins` WHERE `admin_id` = ?", (admin_id,)).fetchall()
+            return bool(len(result))
 
     def get_admin_name(self, admin_id):
-        with self.connection:
-            return self.cursor.execute(f'SELECT admin_name FROM admins WHERE admin_id = {admin_id}').fetchmany(1)[0][0]
+        if self.admin_exists(admin_id):
+            with self.connection:
+                result = self.cursor.execute(f'SELECT admin_name FROM `admins` WHERE `admin_id` = ?', (admin_id,)).fetchmany(1)[0][0]
+                return result
+        else:
+            logging.info(f'Админ {admin_id} отсутствует')
+            return
 
     def add_ad(self, user_name, product_name, amount, price, town, picture_id, user_id, description, posted=False):
-        posted = posted or False
         with self.connection:
             return self.cursor.execute(
                 f'INSERT INTO ads (user_name, product_name, amount, price, town, picture_id, user_id, description, posted) '
@@ -76,7 +85,7 @@ class Sqlighter:
 
     def get_user_ads(self, user_id):
         with self.connection:
-            return self.cursor.execute(f"SELECT * FROM `ads` WHERE user_id = {user_id}").fetchall()
+            return self.cursor.execute(f"SELECT * FROM `ads` WHERE user_id = ?", (user_id,)).fetchall()
 
     def close(self):
         logging.info('Database shutdown')
