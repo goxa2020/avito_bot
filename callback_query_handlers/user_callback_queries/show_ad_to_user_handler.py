@@ -11,4 +11,3 @@ async def show_ad_to_user_handler(callback_query: CallbackQuery):
     message_id = callback_query.message.message_id
 
     await show_ad_to_user(user_id, ad_index, send_message, message_id)
-

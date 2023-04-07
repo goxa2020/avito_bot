@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv('ignore/.env')
 
 Bot_token = os.getenv('TOKEN')
 Bot_name = 'testtikk_bbot'
