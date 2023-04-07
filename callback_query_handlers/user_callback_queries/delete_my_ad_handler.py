@@ -3,7 +3,7 @@ import logging
 from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 from callback_query_handlers.user_callback_queries.show_ad_to_user import show_ad_to_user
-from config import chanel_id
+from config import chanel_name
 from loader import db, bot
 
 
@@ -29,10 +29,8 @@ async def confirm_delete_users_ad(callback_query: CallbackQuery):
 
     try:
 
-        db.del_ad(ad[0])
-
         if ad[10]:
-            await bot.delete_message(chanel_id, ad[9])
+            await bot.delete_message(chanel_name, ad[9])
 
     except Exception as e:
 
@@ -42,13 +40,30 @@ async def confirm_delete_users_ad(callback_query: CallbackQuery):
                                     callback_query.from_user.id,
                                     callback_query.message.message_id)
 
-        await show_ad_to_user(callback_query.from_user.id, ad_index - 1, True)
-
     else:
 
-        await bot.edit_message_text(f'Это объявление успешно удалено',
-                                    callback_query.from_user.id,
-                                    callback_query.message.message_id,
-                                    reply_markup=None)
+        try:
+
+            db.del_ad(ad[0])
+
+        except Exception as e:
+
+            logging.error(e)
+
+            await bot.edit_message_text('Что-то не получилось',
+                                        callback_query.from_user.id,
+                                        callback_query.message.message_id)
+
+        else:
+
+            await bot.edit_message_text(f'Это объявление успешно удалено',
+                                        callback_query.from_user.id,
+                                        callback_query.message.message_id,
+                                        reply_markup=None)
+
+    finally:
+
+        await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id-1)
+        await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id-2)
 
         await show_ad_to_user(callback_query.from_user.id, ad_index - 1, True)

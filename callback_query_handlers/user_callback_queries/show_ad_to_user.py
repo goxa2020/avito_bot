@@ -10,7 +10,7 @@ from markups import mainMenu
 async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
     ads = db.get_user_ads(user_id)
     if len(ads) == 0:
-        m_text = 'У вас ещё нет объявлений'
+        m_text = 'У вас нет объявлений'
         return await bot.send_message(user_id, m_text, reply_markup=mainMenu(user_id))
     ad_index = int(ad_index % len(ads))
     ad = ads[ad_index]
