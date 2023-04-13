@@ -1,11 +1,10 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from admin import my_admins_kb, show_ad
 from loader import db, bot
-from aiogram import types
 import logging
 
 
-async def delete_ad(callback_query: types.CallbackQuery):
+async def delete_ad(callback_query: CallbackQuery):
     await callback_query.answer()
 
     ad_index = int(callback_query.data.split("_")[1])
@@ -19,7 +18,7 @@ async def delete_ad(callback_query: types.CallbackQuery):
                            reply_markup=confirm_del_ad_keyboard)
 
 
-async def confirm_delete_ad(callback_query: types.CallbackQuery):
+async def confirm_delete_ad(callback_query: CallbackQuery):
     await callback_query.answer()
 
     ad_index = int(callback_query.data.split("_")[1])
@@ -62,7 +61,7 @@ async def confirm_delete_ad(callback_query: types.CallbackQuery):
             logging.info(e)
 
 
-async def cancel_delete_ad(callback_query: types.CallbackQuery):
+async def cancel_delete_ad(callback_query: CallbackQuery):
     await callback_query.answer()
 
     await bot.edit_message_text(f'Объявление цело и невредимо',

@@ -24,18 +24,20 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
            f"Опубликовано : {'Да' if ad[10] else 'Нет'}"
 
     inline_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton('Удалить', callback_data=f'deleteUsersAd_{ad_index}')
 
     if len(ads) > 1:
-        inline_btn3 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showUsersAd_{ad_index - 1}_0')
-        inline_btn4 = InlineKeyboardButton('Следующее объявление', callback_data=f'showUsersAd_{ad_index + 1}_0')
-        inline_kb.row(inline_btn3, inline_btn4)
+        inline_btn1 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showUsersAd_{ad_index - 1}_0')
+        inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showUsersAd_{ad_index + 1}_0')
+        inline_kb.row(inline_btn1, inline_btn2)
 
-    inline_kb.row(inline_btn1)
+    inline_btn3 = InlineKeyboardButton('Удалить', callback_data=f'deleteUsersAd_{ad_index}')
+    inline_kb.row(inline_btn3)
 
     if ad[10]:
-        inline_btn2 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad[9]}')
-        inline_kb.insert(inline_btn2)
+        inline_btn4 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad[9]}')
+        inline_kb.insert(inline_btn4)
+
+    inline_btn5 = InlineKeyboardButton('Назад', callback_data=f'')
 
     if send_message:
         try:
@@ -60,4 +62,3 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
         return await bot.edit_message_media(chat_id=user_id, media=media, message_id=message_id, reply_markup=inline_kb)
     except Exception as e:
         logging.error(e)
-# TODO: из просмотра объявлений юзера нужна кнопка назад

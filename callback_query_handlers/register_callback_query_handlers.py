@@ -26,6 +26,7 @@ def register_callback_query_handler(dispatcher: Dispatcher):
     dispatcher.register_callback_query_handler(show_ad_to_admin, text_contains="showAd")
 
     dispatcher.register_callback_query_handler(show_ad_to_user_handler, text_contains="showUsersAd")
+
     dispatcher.register_callback_query_handler(delete_users_ad, text_contains="deleteUsersAd")
     dispatcher.register_callback_query_handler(confirm_delete_users_ad, text_contains="confirmDeleteUsersAd_")
 
