@@ -60,3 +60,4 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
         return await bot.edit_message_media(chat_id=user_id, media=media, message_id=message_id, reply_markup=inline_kb)
     except Exception as e:
         logging.error(e)
+# TODO: из просмотра объявлений юзера нужна кнопка назад
