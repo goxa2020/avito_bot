@@ -35,36 +35,32 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
 
     inline_btn4 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
     inline_kb.row(inline_btn4)
-    # TODO: сделать закрепление за денюшки))
     if ad[10]:
         inline_btn5 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad[9]}')
         inline_kb.insert(inline_btn5)
 
     if send_message:
-        try:
-
-            if ad[8]:
+        if ad[8]:
+            try:
                 return await bot.send_photo(user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
 
-        except Exception as e:
-            logging.error(e)
+            except Exception as e:
+                return logging.error(e)
 
         try:
 
             return await bot.send_photo(user_id, photo=no_photo_id, caption=text, reply_markup=inline_kb)
 
         except Exception as e:
-            logging.error(e)
-            return
+            return logging.error(e)
 
-    try:
-
-        if ad[8]:
+    if ad[8]:
+        try:
             media = InputMediaPhoto(ad[8], caption=text)
             return await bot.edit_message_media(chat_id=user_id, media=media, message_id=message_id, reply_markup=inline_kb)
 
-    except Exception as e:
-        logging.error(e)
+        except Exception as e:
+            return logging.error(e)
 
     try:
 
