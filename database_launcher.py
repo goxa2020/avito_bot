@@ -1,20 +1,23 @@
+import psycopg2
 import logging
-import sqlite3
 
 
-class Sqlighter:
-    def __init__(self, database_file):
-        self.connection = sqlite3.connect(database_file, check_same_thread=False)
+class Database_launcher:
+    def __init__(self, database, user, password, host, port):
+        self.connection = psycopg2.connect(
+            database=database,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+        )
         self.cursor = self.connection.cursor()
         logging.info("Database connection successful.")
 
     def add_user(self, user_id):
         with self.connection:
-            return self.cursor.execute(f'INSERT INTO users (user_id) VALUES(?)', (user_id,))
-
-    def get_users(self):
-        with self.connection:
-            return self.cursor.execute("SELECT * FROM `users`").fetchall()
+            self.cursor.execute(f'INSERT INTO users (user_id) VALUES(?)', (user_id,))
+            return self.connection.commit()
 
     def user_is_admin(self, user_id):
         with self.connection:
@@ -58,10 +61,6 @@ class Sqlighter:
                 f'INSERT INTO ads (user_name, product_name, amount, price, town, picture_id, user_id, description, posted) '
                 f'VALUES(?,?,?,?,?,?,?,?,?)',
                 (user_name, product_name, amount, price, town, picture_id, user_id, description, posted))
-
-    def get_all_ads(self):
-        with self.connection:
-            return self.cursor.execute("SELECT * FROM `ads`").fetchall()
 
     def del_ad(self, ad_id):
         with self.connection:
