@@ -103,9 +103,9 @@ async def town_chosen(message: types.Message):
 
 
 async def picture_chosen(message: types.Message):
+    chat_id = message.from_user.id
+    ad = ad_dict[chat_id]
     if message.content_type == 'photo':
-        chat_id = message.from_user.id
-        ad = ad_dict[chat_id]
         ad.picture_id = message.photo[0].file_id
 
         await message.answer(f'Отлично, теперь отправь описание товара', reply_markup=cancel_kb())
@@ -115,6 +115,7 @@ async def picture_chosen(message: types.Message):
         if message.text == "Нет":
             await message.answer(f'Окей, без фотки обойдёмся\n'
                                  f'Отправь описание товара', reply_markup=cancel_kb())
+            ad.picture_id = 0
             await Add_ad.next()
         else:
             keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)

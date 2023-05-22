@@ -21,7 +21,7 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
            f"Цена: {ad[4]}\n" \
            f"Город: {ad[5]}\n" \
            f"Описание: {ad[7]}\n" \
-           f"Опубликовано : {'Да' if ad[10] else 'Нет'}"
+           f"Опубликовано : {'Да' if ad[9] else 'Нет'}"
 
     inline_kb = InlineKeyboardMarkup()
 
@@ -35,12 +35,12 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
 
     inline_btn4 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
     inline_kb.row(inline_btn4)
-    if ad[10]:
+    if ad[9]:
         inline_btn5 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad[9]}')
         inline_kb.insert(inline_btn5)
 
     if send_message:
-        if ad[8]:
+        if ad[10] != '0':
             try:
                 return await bot.send_photo(user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
 
@@ -54,9 +54,9 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
         except Exception as e:
             return logging.error(e)
 
-    if ad[8]:
+    if ad[10] != '0':
         try:
-            media = InputMediaPhoto(ad[8], caption=text)
+            media = InputMediaPhoto(ad[10], caption=text)
             return await bot.edit_message_media(chat_id=user_id, media=media, message_id=message_id, reply_markup=inline_kb)
 
         except Exception as e:

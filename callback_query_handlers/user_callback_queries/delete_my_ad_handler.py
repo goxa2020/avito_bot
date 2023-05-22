@@ -29,8 +29,8 @@ async def confirm_delete_users_ad(callback_query: CallbackQuery):
 
     try:
 
-        if ad[10]:
-            await bot.delete_message(chanel_name, ad[9])
+        if ad[9]:
+            await bot.delete_message(chanel_name, ad[8])
 
     except Exception as e:
 

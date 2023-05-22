@@ -33,17 +33,17 @@ async def show_ad_to_admin(callback_query: types.CallbackQuery):
 
     inline_kb.row(inline_btn1, inline_btn2)
 
-    if ad[8]:
-        photo = types.InputMediaPhoto(ad[8], caption=text)
+    if ad[10] == '0':
+        photo = types.InputMediaPhoto(no_photo_id, caption=text)
 
         return await bot.edit_message_media(chat_id=callback_query.from_user.id,
                                             message_id=callback_query.message.message_id,
                                             reply_markup=inline_kb,
                                             media=photo)
 
-    photo = types.InputMediaPhoto(no_photo_id, caption=text)
+    photo = types.InputMediaPhoto(ad[10], caption=text)
 
     return await bot.edit_message_media(chat_id=callback_query.from_user.id,
-                                        message_id=callback_query.message.message_id,
-                                        reply_markup=inline_kb,
-                                        media=photo)
+                                            message_id=callback_query.message.message_id,
+                                            reply_markup=inline_kb,
+                                            media=photo)

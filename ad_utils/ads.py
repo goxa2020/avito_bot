@@ -18,8 +18,8 @@ async def send_user_ads(message: types.Message):
     max_len_name = len(max([ad[2] for ad in user_ads], key=len))
 
     for ad in user_ads:
-        publish = "Опубликовано" if ad[10] else "Не опубликовано"
-        indent = max_len_name + (12 if ad[10] else 15) - len(ad[2]) + 2
+        publish = "Опубликовано" if ad[9] else "Не опубликовано"
+        indent = max_len_name + (12 if ad[9] else 15) - len(ad[2]) + 2
         m_text += pre(f'{ad[2]}{publish.rjust(indent)}')
 
     inline_kb = InlineKeyboardMarkup()

@@ -81,7 +81,7 @@ async def show_ad(user_id, ad_index=None):
 
     inline_kb.row(inline_btn3, inline_btn4)
 
-    if ad[8]:
-        return await bot.send_photo(chat_id=user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
+    if ad[10] == '0':
+        return await bot.send_photo(chat_id=user_id, photo=no_photo_id, caption=text, reply_markup=inline_kb)
 
-    return await bot.send_photo(chat_id=user_id, photo=no_photo_id, caption=text, reply_markup=inline_kb)
+    return await bot.send_photo(chat_id=user_id, photo=ad[10], caption=text, reply_markup=inline_kb)

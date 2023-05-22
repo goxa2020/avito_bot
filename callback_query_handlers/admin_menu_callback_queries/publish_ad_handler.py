@@ -39,9 +39,9 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
 
     try:
 
-        if ad[8]:
+        if ad[10] != '0':
 
-            message = await bot.send_photo(chat_id=chanel_name, photo=ad[8], caption=text, reply_markup=write_to_seller)
+            message = await bot.send_photo(chat_id=chanel_name, photo=ad[10], caption=text, reply_markup=write_to_seller)
 
         else:
 
