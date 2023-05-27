@@ -42,7 +42,7 @@ async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
     if send_message:
         if ad[10] != '0':
             try:
-                return await bot.send_photo(user_id, photo=ad[8], caption=text, reply_markup=inline_kb)
+                return await bot.send_photo(user_id, photo=ad[10], caption=text, reply_markup=inline_kb)
 
             except Exception as e:
                 return logging.error(e)
