@@ -1,6 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from admin import my_admins_kb, show_ad
-from loader import db, bot
+from datatypes import Ad
+from loader import bot, session
 import logging
 
 
@@ -23,15 +24,14 @@ async def confirm_delete_ad(callback_query: CallbackQuery):
 
     ad_index = int(callback_query.data.split("_")[1])
 
-    ads = db.get_not_posted_ads()
+    ads = session.query(Ad).filter(Ad.posted == False)
 
     ad = ads[ad_index]
 
-    ad_id = ad[0]
-
     try:
 
-        db.del_ad(ad_id)
+        session.delete(ad)
+        session.commit()
 
     except Exception as e:
 
@@ -54,7 +54,7 @@ async def confirm_delete_ad(callback_query: CallbackQuery):
 
         try:
 
-            await bot.send_message(ad[6], f'Администратор отклонил вашу запись с товаром {ad[2]}')
+            await bot.send_message(ad.user_id, f'Администратор отклонил вашу запись с товаром {ad.product_name}')
 
         except Exception as e:
 

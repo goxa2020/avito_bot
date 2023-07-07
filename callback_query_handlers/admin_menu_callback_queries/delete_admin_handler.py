@@ -1,7 +1,8 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram import types
 from admin import my_admins_text, my_admins_kb
-from loader import db, bot
+from datatypes import User
+from loader import bot, session
 import logging
 
 
@@ -9,7 +10,7 @@ async def delete_admin(callback_query: types.CallbackQuery):
     await callback_query.answer()
 
     del_id = callback_query.data.split("_")[1]
-    admin_name = db.get_admin_name(del_id)
+    admin_name = session.query(User).filter(User.is_admin and User.user_id == del_id).first().user_first_name
 
     inline_kb = InlineKeyboardMarkup()
     inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmCallDelAdm_{del_id}')
@@ -25,8 +26,11 @@ async def confirm_delete_admin(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     del_id = callback_query.data.split("_")[1]
     try:
-        if db.user_is_admin(del_id):
-            db.del_admin(del_id)
+        if session.query(User).filter(User.user_id == del_id).first().is_admin:
+            admin = session.query(User).filter(User.user_id == del_id).first()
+            admin.is_admin = False
+            admin.admin_inviter_id = None
+            session.commit()
     except Exception as e:
         logging.error(e)
         await bot.edit_message_text('Что-то не получилось', callback_query.from_user.id,

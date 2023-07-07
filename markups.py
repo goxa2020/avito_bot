@@ -1,10 +1,12 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-from loader import db
+from datatypes import User
+from loader import session
 
 
 def mainMenu(user_id) -> ReplyKeyboardMarkup:
-    is_admin = db.user_is_admin(user_id)
+    user = session.query(User).filter(User.user_id == str(user_id)).first()
+    is_admin = user.is_admin if user else False
     main_Menu = ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = KeyboardButton('Добавить объявление')
     btn2 = KeyboardButton('Мои объявления')

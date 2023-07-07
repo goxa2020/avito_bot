@@ -1,6 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import chanel_name
-from loader import db, bot
+from datatypes import Ad
+from loader import bot, session
 from admin import show_ad
 from aiogram import types
 import logging
@@ -24,24 +25,25 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
     await callback_query.answer()
 
     ad_index = int(callback_query.data.split("_")[1])
-    ads = db.get_not_posted_ads()
+    ads = session.query(Ad).filter(Ad.posted == False)
     ad = ads[ad_index]
 
     write_to_seller = InlineKeyboardMarkup()
-    inline_btn = InlineKeyboardButton('Написать продавцу', url=f'https://t.me/{ad[1][1::]}')
+    inline_btn = InlineKeyboardButton('Написать продавцу', url=ad.user_link)
     write_to_seller.add(inline_btn)
 
-    text = f'Товар: {ad[2]} \n' \
-           f'Количество: {ad[3]} \n' \
-           f'Цена за штуку: {ad[4]} \n' \
-           f'Описание: {ad[7]} \n' \
-           f'Город: {ad[5]}'
+    text = f'Товар: {ad.product_name} \n' \
+           f'Количество: {ad.amount} \n' \
+           f'Цена за штуку: {ad.price} \n' \
+           f'Описание: {ad.description} \n' \
+           f'Город: {ad.town}'
 
     try:
 
-        if ad[10] != '0':
+        if ad.picture_id:
 
-            message = await bot.send_photo(chat_id=chanel_name, photo=ad[10], caption=text, reply_markup=write_to_seller)
+            message = await bot.send_photo(chat_id=chanel_name, photo=ad.picture_id, caption=text,
+                                           reply_markup=write_to_seller)
 
         else:
 
@@ -60,9 +62,10 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
     else:
         message_id = message.message_id
 
-        db.update_ad_post_id(ad[0], message_id)
+        ad.posted = True
+        ad.post_id = message_id
 
-        db.update_ad_status(ad[0])
+        session.commit()
 
         await bot.edit_message_text(f'Это объявление успешно опубликованно',
                                     callback_query.from_user.id,
@@ -73,7 +76,7 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
 
         try:
 
-            await bot.send_message(ad[6], f'Администратор опубликовал вашу запись с товаром {ad[2]}')
+            await bot.send_message(ad.user_id, f'Администратор опубликовал вашу запись с товаром {ad.product_name}')
 
         except Exception as e:
 

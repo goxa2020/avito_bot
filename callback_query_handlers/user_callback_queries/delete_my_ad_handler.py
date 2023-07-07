@@ -4,7 +4,8 @@ from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBut
 
 from callback_query_handlers.user_callback_queries.show_ad_to_user import show_ad_to_user
 from config import chanel_name
-from loader import db, bot
+from datatypes import Ad
+from loader import bot, session
 
 
 async def delete_users_ad(callback_query: CallbackQuery):
@@ -24,13 +25,13 @@ async def delete_users_ad(callback_query: CallbackQuery):
 async def confirm_delete_users_ad(callback_query: CallbackQuery):
     await callback_query.answer()
     ad_index = int(callback_query.data.split("_")[1])
-    ads = db.get_user_ads(callback_query.from_user.id)
+    ads = session.query(Ad).filter(Ad.user_id == callback_query.from_user.id)
     ad = ads[ad_index]
 
     try:
 
-        if ad[9]:
-            await bot.delete_message(chanel_name, ad[8])
+        if ad.posted:
+            await bot.delete_message(chanel_name, ad.post_id)
 
     except Exception as e:
 
@@ -43,8 +44,8 @@ async def confirm_delete_users_ad(callback_query: CallbackQuery):
     else:
 
         try:
-
-            db.del_ad(ad[0])
+            session.delete(ad)
+            session.commit()
 
         except Exception as e:
 

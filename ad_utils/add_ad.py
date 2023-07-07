@@ -2,7 +2,8 @@
 __all__ = ('Add_ad', 'name_entered', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
            'town_chosen', 'picture_chosen', 'description_chosen', 'confirm_chosen', 'cancel')
 # import logging
-from loader import db, bot
+from datatypes import Ad
+from loader import session, bot
 from markups import mainMenu, cancel_kb
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
@@ -24,17 +25,6 @@ class Add_ad(StatesGroup):
 ad_dict = {}
 
 
-class Ad:
-    def __init__(self, name):
-        self.name = name
-        self.product_name = None
-        self.product_amount = None
-        self.product_price = None
-        self.town = None
-        self.picture_id = None
-        self.description = None
-
-
 async def cancel(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer("Действие отменено", reply_markup=mainMenu(message.from_user.id))
@@ -52,7 +42,7 @@ async def ad_start(message: types.Message):
 async def name_entered(message: types.Message):
     chat_id = message.from_user.id
     name = message.text
-    ad = Ad(name)
+    ad = Ad(user_id=str(message.from_user.id), user_mention=message.from_user.mention, user_first_name=name, user_link=message.from_user.url)
     ad_dict[chat_id] = ad
     await message.answer("Введите название товара:", reply_markup=cancel_kb())
     await Add_ad.next()
@@ -72,7 +62,7 @@ async def product_amount_chosen(message: types.Message):
         chat_id = message.from_user.id
         product_amount = message.text
         ad = ad_dict[chat_id]
-        ad.product_amount = product_amount
+        ad.amount = product_amount
         await message.answer("Введите цену в рублях:", reply_markup=cancel_kb())
         await Add_ad.next()
     else:
@@ -84,7 +74,7 @@ async def product_price_chosen(message: types.Message):
         chat_id = message.from_user.id
         product_price = message.text
         ad = ad_dict[chat_id]
-        ad.product_price = product_price
+        ad.price = product_price
         await message.answer("Введите свой город:", reply_markup=cancel_kb())
         await Add_ad.next()
     else:
@@ -115,7 +105,6 @@ async def picture_chosen(message: types.Message):
         if message.text == "Нет":
             await message.answer(f'Окей, без фотки обойдёмся\n'
                                  f'Отправь описание товара', reply_markup=cancel_kb())
-            ad.picture_id = 0
             await Add_ad.next()
         else:
             keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
@@ -136,10 +125,10 @@ async def description_chosen(message: types.Message):
     keyboard.add('Подтвердить', 'Отмена')
 
     await message.answer(f'Подтвердите пожалуйста\n'
-                         f'Имя: {ad.name}\n'
+                         f'Имя: {ad.user_first_name}\n'
                          f'Название товара: {ad.product_name}\n'
-                         f'Количество товара: {ad.product_amount}\n'
-                         f'Цена: {ad.product_price}\n'
+                         f'Количество товара: {ad.amount}\n'
+                         f'Цена: {ad.price}\n'
                          f'Город: {ad.town}\n'
                          f'Описание: {ad.description}', reply_markup=keyboard)
 
@@ -151,7 +140,7 @@ async def confirm_chosen(message: types.Message, state: FSMContext):
         await state.finish()
         chat_id = message.from_user.id
         ad = ad_dict[chat_id]
-        db.add_ad(message.from_user.mention, ad.product_name, ad.product_amount,
-                  ad.product_price, ad.town, ad.picture_id, message.from_user.id, ad.description)
+        session.add(ad)
+        session.commit()
         return await bot.send_message(chat_id, f'Всё отлично', reply_markup=mainMenu(message.from_user.id))
     await message.answer('Пользуйся клавиатурой')

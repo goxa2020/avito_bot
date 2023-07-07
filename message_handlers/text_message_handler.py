@@ -1,9 +1,11 @@
 from aiogram import types
 
+# noinspection PyProtectedMember
 from ad_utils.add_ad import ad_start
 from ad_utils.ads import send_user_ads
 from admin import my_admins_text, my_admins_kb, admin_menu_profile, show_ad, not_access, add_admin_text
-from loader import db
+from datatypes import User
+from loader import session
 from markups import mainMenu
 
 # import logging
@@ -11,7 +13,10 @@ from markups import mainMenu
 
 async def all_messages(message: types.Message):
     if message.chat.type == 'private':
-        is_admin = db.user_is_admin(message.from_user.id)
+        user = session.query(User).filter(User.user_id == message.from_user.id).first()
+        is_admin = user.is_admin if user else False
+        print(message.from_user.id)
+        print(type(message.from_user.id))
         match message.text:
             case 'Добавить админа':
                 if not is_admin:
