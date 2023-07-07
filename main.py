@@ -23,7 +23,7 @@ async def on_shutdown(_):
 
 if __name__ == '__main__':
     try:
-        executor.start_polling(dp, skip_updates=True, on_startup=on_start, on_shutdown=on_shutdown)  # Запускаем бота
+        executor.start_polling(dp, on_startup=on_start, on_shutdown=on_shutdown)  # Запускаем бота
     except Exception as e:
         pass
         logging.error(e)
