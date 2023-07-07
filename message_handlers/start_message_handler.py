@@ -13,7 +13,6 @@ async def start_message(message: types.Message):
         admin_invite = (message.text.split()[1][:2:-1] if admin_invited else False)
         user = session.query(User).filter(User.user_id == message.from_user.id).first()
         is_admin = user.is_admin if user else False
-        print(is_admin)
         if admin_invited:
             if is_admin:
                 await message.answer('Вы и так уже админ', reply_markup=mainMenu(message.from_user.id))

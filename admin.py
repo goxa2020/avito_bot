@@ -54,7 +54,6 @@ async def show_ad(user_id, ad_index=None):
     ad_index = ad_index or 0
 
     non_posted_ads = session.query(Ad).filter(Ad.posted == False)
-    print(non_posted_ads.count())
     if not non_posted_ads.count():
         return await bot.send_message(user_id, 'Нет объявлений на рассмотрении', reply_markup=mainMenu(user_id))
 

@@ -15,8 +15,6 @@ async def all_messages(message: types.Message):
     if message.chat.type == 'private':
         user = session.query(User).filter(User.user_id == message.from_user.id).first()
         is_admin = user.is_admin if user else False
-        print(message.from_user.id)
-        print(type(message.from_user.id))
         match message.text:
             case 'Добавить админа':
                 if not is_admin:
