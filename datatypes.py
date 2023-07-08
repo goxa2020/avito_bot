@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, Boolean, Text, Double
+from sqlalchemy import Column, Integer, Boolean, Text, Double, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -15,6 +16,7 @@ class User(Base):
     id = Column('id', Integer, primary_key=True)
     user_id = Column('user_id', Double)
     user_first_name = Column('user_first_name', Text)
+    user_link = Column('user_link', Text)
     is_admin = Column('is_admin', Boolean)
     admin_inviter_id = Column('admin_inviter_id', Integer)
 
@@ -25,9 +27,7 @@ class User(Base):
 class Ad(Base):
     """ad_id: Autoincrement
     user_id: Integer
-    user_first_name: Text
-    user_link: Text
-    user_mention: Text
+    owner: User
     product_name: Text
     amount: Integer
     price: Integer
@@ -39,10 +39,8 @@ class Ad(Base):
     __tablename__ = 'ads'
 
     ad_id = Column('ad_id', Integer, primary_key=True, autoincrement=True)
-    user_id = Column('user_id', Double)
-    user_first_name = Column('user_first_name', Text)
-    user_link = Column('user_link', Text)
-    user_mention = Column('user_mention', Text)
+    user_id = Column('user_id', ForeignKey('users.id'))
+    owner = relationship('User', backref='users')
     product_name = Column('product_name', Text)
     amount = Column('amount', Integer)
     price = Column('price', Integer)

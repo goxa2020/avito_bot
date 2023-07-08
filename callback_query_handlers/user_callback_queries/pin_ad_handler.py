@@ -12,9 +12,9 @@ async def pin_ad_handler(callback_query: CallbackQuery):
 
     inline_kb = InlineKeyboardMarkup()
 
-    inline_btn1 = InlineKeyboardButton('Подтвердить', callback_data='')
-    inline_btn2 = InlineKeyboardButton('Отмена', callback_data='')
+    inline_btn1 = InlineKeyboardButton('Подтвердить', callback_data=f'accept_pin_ad_')
+    inline_btn2 = InlineKeyboardButton('Отмена', callback_data=f'cancel_pin_ad')
 
     inline_kb.row(inline_btn1, inline_btn2)
-    await bot.send_message(callback_query.from_user.id, text)
+    await bot.send_message(callback_query.from_user.id, text, reply_markup=inline_kb)
 # TODO: Доделать

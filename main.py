@@ -27,4 +27,3 @@ if __name__ == '__main__':
     except Exception as e:
         pass
         logging.error(e)
-# TODO: полностью перейти на SQLAlchemy, во всех файлах переписать работу с БД

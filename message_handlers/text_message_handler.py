@@ -31,12 +31,12 @@ async def all_messages(message: types.Message):
             case 'Управление объявлениями':
                 if not is_admin:
                     return await not_access(message.from_user.id)
-                await show_ad(message.from_user.id)
+                return await show_ad(message.from_user.id)
             case "Мои объявления":
-                await send_user_ads(message)
+                return await send_user_ads(message)
             case "Добавить объявление":
-                await ad_start(message)
+                return await ad_start(message)
             case 'Назад' | 'Отмена':
-                await message.answer('Вы вернулись назад', reply_markup=mainMenu(message.from_user.id))
+                return await message.answer('Вы вернулись назад', reply_markup=mainMenu(message.from_user.id))
             case _:
-                await message.answer('Я тебя не понял', reply_markup=mainMenu(message.from_user.id))
+                return await message.answer('Я тебя не понял', reply_markup=mainMenu(message.from_user.id))

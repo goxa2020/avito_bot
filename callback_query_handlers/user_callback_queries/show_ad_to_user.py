@@ -3,13 +3,14 @@ import logging
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 
 from config import chanel_name, no_photo_id
-from datatypes import Ad
+from datatypes import Ad, User
 from loader import bot, session
 from markups import mainMenu
 
 
-async def show_ad_to_user(user_id, ad_index, send_message, message_id=None):
-    ads = session.query(Ad).filter(Ad.user_id == user_id)
+async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None):
+    user = session.query(User).filter(User.user_id == user_id).first()
+    ads = session.query(Ad).filter(Ad.owner == user)
     if ads.count() == 0:
         m_text = 'У вас нет объявлений'
         return await bot.send_message(user_id, m_text, reply_markup=mainMenu(user_id))

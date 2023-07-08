@@ -2,7 +2,7 @@
 __all__ = ('Add_ad', 'name_entered', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
            'town_chosen', 'picture_chosen', 'description_chosen', 'confirm_chosen', 'cancel')
 # import logging
-from datatypes import Ad
+from datatypes import Ad, User
 from loader import session, bot
 from markups import mainMenu, cancel_kb
 from aiogram import types
@@ -40,10 +40,10 @@ async def ad_start(message: types.Message):
 
 
 async def name_entered(message: types.Message):
-    chat_id = message.from_user.id
-    name = message.text
-    ad = Ad(user_id=str(message.from_user.id), user_mention=message.from_user.mention, user_first_name=name, user_link=message.from_user.url)
-    ad_dict[chat_id] = ad
+    user_id = message.from_user.id
+    user = session.query(User).filter(User.user_id == user_id).first()
+    ad = Ad(owner=user, user_id=user.id)
+    ad_dict[user_id] = ad
     await message.answer("Введите название товара:", reply_markup=cancel_kb())
     await Add_ad.next()
 
@@ -125,7 +125,6 @@ async def description_chosen(message: types.Message):
     keyboard.add('Подтвердить', 'Отмена')
 
     await message.answer(f'Подтвердите пожалуйста\n'
-                         f'Имя: {ad.user_first_name}\n'
                          f'Название товара: {ad.product_name}\n'
                          f'Количество товара: {ad.amount}\n'
                          f'Цена: {ad.price}\n'

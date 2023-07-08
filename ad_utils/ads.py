@@ -2,13 +2,13 @@ from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 from aiogram.utils.markdown import text, pre
 
-from datatypes import Ad
+from datatypes import Ad, User
 from loader import session
 
 
 async def send_user_ads(message: types.Message):
-    user_ads = session.query(Ad).filter(Ad.user_id == message.from_user.id)
-
+    user = session.query(User).filter(User.user_id == message.from_user.id).first()
+    user_ads = session.query(Ad).filter(Ad.owner == user)
     if user_ads.count() > 1:
         m_text = text('Ваши объявления:')
     elif user_ads.count() == 1:

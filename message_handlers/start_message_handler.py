@@ -30,7 +30,7 @@ async def start_message(message: types.Message):
                             user.admin_inviter_id = admin_invite
                         else:
                             user = User(user_id=message.from_user.id, user_first_name=message.from_user.first_name,
-                                        is_admin=True, admin_inviter_id=admin_invite)
+                                        user_link=message.from_user.url, is_admin=True, admin_inviter_id=admin_invite)
                             session.add(user)
                         session.commit()
                     except Exception as e:

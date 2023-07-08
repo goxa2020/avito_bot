@@ -40,12 +40,11 @@ def my_admins_text(user_id: int) -> str:
 
 def my_admins_kb(user_id) -> InlineKeyboardMarkup():
     admins = session.query(User).filter(User.is_admin)
-    my_admins = [admin.user_id for admin in admins if int(admin.admin_inviter_id) == user_id]
-    my_admins_names = [admin.user_first_name for admin in my_admins]
+    my_admins = [admin for admin in admins if int(admin.admin_inviter_id) == user_id]
     inline_kb = InlineKeyboardMarkup()
-    for name in my_admins_names:
-        inline_btn = InlineKeyboardButton(f'Лишить админки {name}',
-                                          callback_data=f'callDelAdm_{my_admins[my_admins_names.index(name)]}')
+    for admin in my_admins:
+        inline_btn = InlineKeyboardButton(f'Лишить админки {admin.user_first_name}',
+                                          callback_data=f'callDelAdm_{admin.user_id}')
         inline_kb.add(inline_btn)
     return inline_kb
 
@@ -54,6 +53,7 @@ async def show_ad(user_id, ad_index=None):
     ad_index = ad_index or 0
 
     non_posted_ads = session.query(Ad).filter(Ad.posted == False)
+    # non_posted_ads = session.query(Ad)
     if not non_posted_ads.count():
         return await bot.send_message(user_id, 'Нет объявлений на рассмотрении', reply_markup=mainMenu(user_id))
 

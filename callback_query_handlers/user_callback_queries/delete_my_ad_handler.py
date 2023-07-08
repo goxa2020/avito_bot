@@ -1,10 +1,9 @@
 import logging
 
 from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-
 from callback_query_handlers.user_callback_queries.show_ad_to_user import show_ad_to_user
 from config import chanel_name
-from datatypes import Ad
+from datatypes import Ad, User
 from loader import bot, session
 
 
@@ -25,7 +24,8 @@ async def delete_users_ad(callback_query: CallbackQuery):
 async def confirm_delete_users_ad(callback_query: CallbackQuery):
     await callback_query.answer()
     ad_index = int(callback_query.data.split("_")[1])
-    ads = session.query(Ad).filter(Ad.user_id == callback_query.from_user.id)
+    user = session.query(User).filter(User.user_id == callback_query.from_user.id).first()
+    ads = session.query(Ad).filter(Ad.owner == user)
     ad = ads[ad_index]
 
     try:

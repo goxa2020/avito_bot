@@ -10,7 +10,7 @@ async def delete_admin(callback_query: types.CallbackQuery):
     await callback_query.answer()
 
     del_id = callback_query.data.split("_")[1]
-    admin_name = session.query(User).filter(User.is_admin and User.user_id == del_id).first().user_first_name
+    admin_name = session.query(User).filter(User.is_admin).filter(User.user_id == del_id).first().user_first_name
 
     inline_kb = InlineKeyboardMarkup()
     inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmCallDelAdm_{del_id}')
