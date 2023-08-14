@@ -3,8 +3,8 @@ import logging
 from aiogram.utils import executor
 from message_handlers.register_message_handlers import register_handlers
 from callback_query_handlers.register_callback_query_handlers import register_callback_query_handlers
+from pre_checkout_query_handlers.register_pre_checkout_query_handlers import register_pre_checkout_query_handlers
 from loader import dp, session
-import pre_checkout_query_handlers.pre_checkout_query_handler
 
 
 async def on_start(_):
@@ -24,8 +24,8 @@ async def on_shutdown(_):
 
 
 if __name__ == '__main__':
-    try:
-        executor.start_polling(dp, on_startup=on_start, on_shutdown=on_shutdown)  # Запускаем бота
-    except Exception as e:
-        pass
-        logging.error(e)
+    # try:
+    executor.start_polling(dp, on_startup=on_start, on_shutdown=on_shutdown)  # Запускаем бота
+    # except Exception as e:
+    #
+    #     logging.error(e)

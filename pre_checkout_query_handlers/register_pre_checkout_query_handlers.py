@@ -1,0 +1,7 @@
+from aiogram.dispatcher import Dispatcher
+
+from pre_checkout_query_handlers.pre_checkout_query_handler import process_pre_checkout_query
+
+
+def register_pre_checkout_query_handlers(dispatcher: Dispatcher):
+    dispatcher.register_pre_checkout_query_handler(process_pre_checkout_query)
