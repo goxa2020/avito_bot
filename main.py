@@ -2,8 +2,9 @@ import logging
 
 from aiogram.utils import executor
 from message_handlers.register_message_handlers import register_handlers
-from callback_query_handlers.register_callback_query_handlers import register_callback_query_handler
+from callback_query_handlers.register_callback_query_handlers import register_callback_query_handlers
 from loader import dp, session
+import pre_checkout_query_handlers.pre_checkout_query_handler
 
 
 async def on_start(_):
@@ -11,7 +12,8 @@ async def on_start(_):
     Функция вызывается при старте бота
     """
     register_handlers(dp)  # Регистрируем message handler`ы
-    register_callback_query_handler(dp)  # Регистрируем callback handler`ы
+    register_callback_query_handlers(dp)  # Регистрируем callback handler`ы
+    register_pre_checkout_query_handlers(dp)
 
 
 async def on_shutdown(_):

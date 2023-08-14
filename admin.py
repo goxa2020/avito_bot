@@ -62,7 +62,7 @@ async def show_ad(user_id, ad_index=None):
     ad = non_posted_ads[ad_index]
 
     text = f"Объявление {ad_index + 1} из {non_posted_ads.count()}\n" \
-           f"Имя: {ad.user_first_name}\n" \
+           f"Имя: {ad.owner.user_first_name}\n" \
            f"Название товара: {ad.product_name}\n" \
            f"Количество: {ad.amount}\n" \
            f"Цена: {ad.price}\n" \

@@ -23,7 +23,8 @@ async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None
            f"Цена: {ad.price}\n" \
            f"Город: {ad.town}\n" \
            f"Описание: {ad.description}\n" \
-           f"Опубликовано : {'Да' if ad.posted else 'Нет'}"
+           f"Опубликовано: {'Да' if ad.posted else 'Нет'}\n" \
+           f"{'Закреплено: Да' if ad.is_pinned else ''}"
 
     inline_kb = InlineKeyboardMarkup()
 
@@ -36,9 +37,11 @@ async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None
     inline_kb.row(inline_btn3)
 
     if ad.posted:
-        inline_btn4 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
+        if not ad.is_pinned:
+            inline_btn4 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
+            inline_kb.add(inline_btn4)
         inline_btn5 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad.post_id}')
-        inline_kb.row(inline_btn4, inline_btn5)
+        inline_kb.add(inline_btn5)
 
     if send_message:
         if ad.picture_id:

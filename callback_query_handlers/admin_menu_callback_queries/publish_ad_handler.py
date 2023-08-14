@@ -1,10 +1,12 @@
+import logging
+
+from aiogram import types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+from admin import show_ad
 from config import chanel_name
 from datatypes import Ad
 from loader import bot, session
-from admin import show_ad
-from aiogram import types
-import logging
 
 
 async def publish_ad(callback_query: types.CallbackQuery):
@@ -29,7 +31,7 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
     ad = ads[ad_index]
 
     write_to_seller = InlineKeyboardMarkup()
-    inline_btn = InlineKeyboardButton('Написать продавцу', url=ad.user_link)
+    inline_btn = InlineKeyboardButton('Написать продавцу', url=ad.owner.user_link)
     write_to_seller.add(inline_btn)
 
     text = f'Товар: {ad.product_name} \n' \
@@ -76,7 +78,7 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
 
         try:
 
-            await bot.send_message(ad.user_id, f'Администратор опубликовал вашу запись с товаром {ad.product_name}')
+            await bot.send_message(ad.owner.user_id, f'Администратор опубликовал вашу запись с товаром {ad.product_name}')
 
         except Exception as e:
 

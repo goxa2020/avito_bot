@@ -1,4 +1,4 @@
-__all__ = ('Bot_token', 'Bot_name', 'chanel_name', 'chanel_id', 'no_photo_id',
+__all__ = ('Bot_token', 'yookassa_token', 'Bot_name', 'chanel_name', 'chanel_id', 'no_photo_id',
            'database_name', 'database_user', 'database_password', 'database_host', 'database_port')
 from dotenv import load_dotenv
 import os
@@ -6,6 +6,7 @@ import os
 load_dotenv('ignore/.env')
 
 Bot_token = os.getenv('TOKEN')
+yookassa_token = os.getenv('YOOKASSA_TOKEN')
 Bot_name = 'testtikk_bbot'
 chanel_name = '@ttttttttesst'
 chanel_id = os.getenv('CHANEL_ID')

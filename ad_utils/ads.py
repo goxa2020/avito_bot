@@ -10,9 +10,9 @@ async def send_user_ads(message: types.Message):
     user = session.query(User).filter(User.user_id == message.from_user.id).first()
     user_ads = session.query(Ad).filter(Ad.owner == user)
     if user_ads.count() > 1:
-        m_text = text('Ваши объявления:')
+        m_text = text('Ваши объявления:\n')
     elif user_ads.count() == 1:
-        m_text = text('Ваше объявление:')
+        m_text = text('Ваше объявление:\n')
     else:
         m_text = text('У вас ещё нет объявлений')
         return await message.answer(m_text)

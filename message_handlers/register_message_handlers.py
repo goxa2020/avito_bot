@@ -1,9 +1,11 @@
 import logging
 
 from aiogram.dispatcher import Dispatcher
+from aiogram.types import ContentType
 
 from message_handlers.start_message_handler import start_message
 from message_handlers.help_message_handler import help_message
+from message_handlers.successful_payment_message_handler import process_pay
 from message_handlers.text_message_handler import all_messages
 from ad_utils.add_ad import *
 
@@ -13,6 +15,7 @@ def register_handlers(dispatcher: Dispatcher):
     Это аналоги @dp.message_handler(), только собранные в одном месте
     """
     dispatcher.register_message_handler(cancel, lambda msg: msg.text == 'Отмена', state="*")
+    dispatcher.register_message_handler(process_pay, content_types=ContentType.SUCCESSFUL_PAYMENT)
 
     dispatcher.register_message_handler(name_entered, state=Add_ad.waiting_for_name)
     dispatcher.register_message_handler(product_name_chosen, state=Add_ad.waiting_for_product_name)
