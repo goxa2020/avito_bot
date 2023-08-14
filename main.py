@@ -1,4 +1,4 @@
-import logging
+# import logging
 
 from aiogram.utils import executor
 from message_handlers.register_message_handlers import register_handlers
