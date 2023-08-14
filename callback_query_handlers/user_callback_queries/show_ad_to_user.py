@@ -26,22 +26,22 @@ async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None
            f"Опубликовано: {'Да' if ad.posted else 'Нет'}\n" \
            f"{'Закреплено: Да' if ad.is_pinned else ''}"
 
-    inline_kb = InlineKeyboardMarkup()
+    inline_kb = InlineKeyboardMarkup(row_width=2)
 
     if ads.count() > 1:
         inline_btn1 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showUsersAd_{ad_index - 1}_0')
         inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showUsersAd_{ad_index + 1}_0')
-        inline_kb.row(inline_btn1, inline_btn2)
+        inline_kb.add(inline_btn1, inline_btn2)
 
     inline_btn3 = InlineKeyboardButton('Удалить', callback_data=f'deleteUsersAd_{ad_index}')
-    inline_kb.row(inline_btn3)
+    inline_kb.insert(inline_btn3)
 
     if ad.posted:
+        inline_btn4 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad.post_id}')
+        inline_kb.insert(inline_btn4)
         if not ad.is_pinned:
-            inline_btn4 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
-            inline_kb.add(inline_btn4)
-        inline_btn5 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad.post_id}')
-        inline_kb.add(inline_btn5)
+            inline_btn5 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
+            inline_kb.insert(inline_btn5)
 
     if send_message:
         if ad.picture_id:
