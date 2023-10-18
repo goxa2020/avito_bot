@@ -1,2 +1,6 @@
 ignore
-/.idea
+venv
+.idea
+__pycache__
+.gitignore
+count_lines

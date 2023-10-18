@@ -13,9 +13,11 @@ class User(Base):
     is_admin: Boolean
     admin_inviter_id: Integer"""
     __tablename__ = 'users'
+    __allow_unmapped__ = True
 
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     user_id = Column('user_id', Double, unique=True)
+    # TODO: user_id must be str, not double
     user_first_name = Column('user_first_name', Text)
     user_link = Column('user_link', Text)
     is_admin = Column('is_admin', Boolean)
@@ -40,10 +42,11 @@ class Ad(Base):
     post_id: Integer
     is_pinned: Boolean"""
     __tablename__ = 'ads'
+    __allow_unmapped__ = True
 
     ad_id = Column('ad_id', Integer, primary_key=True, autoincrement=True)
     user_id = Column('user_id', ForeignKey('users.user_id'))
-    owner = relationship('User', backref='users')
+    owner: User = relationship('User', backref='users')
     product_name = Column('product_name', Text)
     amount = Column('amount', Integer)
     price = Column('price', Integer)

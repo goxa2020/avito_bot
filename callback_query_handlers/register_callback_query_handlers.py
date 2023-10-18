@@ -1,6 +1,6 @@
 import logging
 
-from aiogram.dispatcher import Dispatcher
+from aiogram import Router, F
 from callback_query_handlers.admin_menu_callback_queries.delete_admin_handler import delete_admin, confirm_delete_admin, cancel_delete_admin
 from callback_query_handlers.admin_menu_callback_queries.publish_ad_handler import publish_ad, confirm_publish_ad, cancel_publish_ad
 from callback_query_handlers.admin_menu_callback_queries.detele_ad_handler import delete_ad, confirm_delete_ad, cancel_delete_ad
@@ -10,29 +10,29 @@ from callback_query_handlers.user_callback_queries.show_ad_to_user_handler impor
 from callback_query_handlers.user_callback_queries.pin_ad_handler import pin_ad_handler, confirm_pin_ad, cancel_pin_ad
 
 
-def register_callback_query_handlers(dispatcher: Dispatcher):
+def register_callback_query_handlers(router: Router):
 
-    dispatcher.register_callback_query_handler(delete_admin, text_contains="callDelAdm")
-    dispatcher.register_callback_query_handler(confirm_delete_admin, text_contains="confirmCallDelAdm")
-    dispatcher.register_callback_query_handler(cancel_delete_admin, text_contains="cancelCallDelAdm")
+    router.callback_query.register(delete_admin, F.data.contains("callDelAdm"))
+    router.callback_query.register(confirm_delete_admin, F.data.contains("confirmCallDelAdm"))
+    router.callback_query.register(cancel_delete_admin, F.data.contains("cancelCallDelAdm"))
 
-    dispatcher.register_callback_query_handler(publish_ad, text_contains="publishAd")
-    dispatcher.register_callback_query_handler(confirm_publish_ad, text_contains="confirmPublishAd")
-    dispatcher.register_callback_query_handler(cancel_publish_ad, text_contains="cancelPublishAd")
+    router.callback_query.register(publish_ad, F.data.contains("publishAd"))
+    router.callback_query.register(confirm_publish_ad, F.data.contains("confirmPublishAd"))
+    router.callback_query.register(cancel_publish_ad, F.data.contains("cancelPublishAd"))
 
-    dispatcher.register_callback_query_handler(delete_ad, text_contains="deleteAd")
-    dispatcher.register_callback_query_handler(confirm_delete_ad, text_contains="confirmDelAd")
-    dispatcher.register_callback_query_handler(cancel_delete_ad, text_contains="cancelDelAd")
+    router.callback_query.register(delete_ad, F.data.contains("deleteAd"))
+    router.callback_query.register(confirm_delete_ad, F.data.contains("confirmDelAd"))
+    router.callback_query.register(cancel_delete_ad, F.data.contains("cancelDelAd"))
 
-    dispatcher.register_callback_query_handler(show_ad_to_admin, text_contains="showAd")
+    router.callback_query.register(show_ad_to_admin, F.data.contains("showAd"))
 
-    dispatcher.register_callback_query_handler(show_ad_to_user_handler, text_contains="showUsersAd")
+    router.callback_query.register(show_ad_to_user_handler, F.data.contains("showUsersAd"))
 
-    dispatcher.register_callback_query_handler(delete_users_ad, text_contains="deleteUsersAd")
-    dispatcher.register_callback_query_handler(confirm_delete_users_ad, text_contains="confirmDeleteUsersAd")
+    router.callback_query.register(delete_users_ad, F.data.contains("deleteUsersAd"))
+    router.callback_query.register(confirm_delete_users_ad, F.data.contains("confirmDeleteUsersAd"))
 
-    dispatcher.register_callback_query_handler(pin_ad_handler, text_contains="pinAd")
-    dispatcher.register_callback_query_handler(confirm_pin_ad, text_contains="confirmPinAd")
-    dispatcher.register_callback_query_handler(cancel_pin_ad, text_contains="cancelPinAd")
+    router.callback_query.register(pin_ad_handler, F.data.contains("pinAd"))
+    router.callback_query.register(confirm_pin_ad, F.data.contains("confirmPinAd"))
+    router.callback_query.register(cancel_pin_ad, F.data.contains("cancelPinAd"))
 
     logging.info('Callback query handlers registered.')

@@ -14,10 +14,9 @@ async def publish_ad(callback_query: types.CallbackQuery):
 
     ad_index = int(callback_query.data.split("_")[1])
 
-    confirm_publish_ad_keyboard = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmPublishAd_{ad_index}')
-    inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelPublishAd')
-    confirm_publish_ad_keyboard.add(inline_btn1).add(inline_btn2)
+    inline_btn1 = InlineKeyboardButton(text=f'Подтвердить', callback_data=f'confirmPublishAd_{ad_index}')
+    inline_btn2 = InlineKeyboardButton(text=f'Отмена', callback_data=f'cancelPublishAd')
+    confirm_publish_ad_keyboard = InlineKeyboardMarkup(inline_keyboard=[[inline_btn1, inline_btn2]])
 
     await bot.send_message(callback_query.from_user.id, 'Точно опубликовать это объявление на канал',
                            reply_markup=confirm_publish_ad_keyboard)
@@ -30,9 +29,8 @@ async def confirm_publish_ad(callback_query: types.CallbackQuery):
     ads = session.query(Ad).filter(Ad.posted == False)
     ad = ads[ad_index]
 
-    write_to_seller = InlineKeyboardMarkup()
-    inline_btn = InlineKeyboardButton('Написать продавцу', url=ad.owner.user_link)
-    write_to_seller.add(inline_btn)
+    inline_btn = InlineKeyboardButton(text='Написать продавцу', url=ad.owner.user_link)
+    write_to_seller = InlineKeyboardMarkup(inline_keyboard=[[inline_btn]])
 
     text = f'Товар: {ad.product_name} \n' \
            f'Количество: {ad.amount} \n' \

@@ -10,10 +10,9 @@ async def delete_ad(callback_query: CallbackQuery):
 
     ad_index = int(callback_query.data.split("_")[1])
 
-    confirm_del_ad_keyboard = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton(f'Подтвердить', callback_data=f'confirmDelAd_{ad_index}')
-    inline_btn2 = InlineKeyboardButton(f'Отмена', callback_data=f'cancelDelAd')
-    confirm_del_ad_keyboard.add(inline_btn1).add(inline_btn2)
+    inline_btn1 = InlineKeyboardButton(text=f'Подтвердить', callback_data=f'confirmDelAd_{ad_index}')
+    inline_btn2 = InlineKeyboardButton(text=f'Отмена', callback_data=f'cancelDelAd')
+    confirm_del_ad_keyboard = InlineKeyboardMarkup(inline_keyboard=[[inline_btn1, inline_btn2]])
 
     await bot.send_message(callback_query.from_user.id, 'Точно удалить это объявление',
                            reply_markup=confirm_del_ad_keyboard)

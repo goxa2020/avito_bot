@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.markdown import text, pre
 
 from datatypes import Ad, User
@@ -24,8 +24,7 @@ async def send_user_ads(message: types.Message):
         indent = max_len_name + (12 if ad.posted else 15) - len(ad.product_name) + 2
         m_text += pre(f'{ad.product_name}{publish.rjust(indent)}')
 
-    inline_kb = InlineKeyboardMarkup()
-    inline_btn = InlineKeyboardButton('Просмотреть каждый подробнее', callback_data=f'showUsersAd_0_1')
-    inline_kb.add(inline_btn)
+    inline_btn = InlineKeyboardButton(text='Просмотреть каждый подробнее', callback_data=f'showUsersAd_0_1')
+    inline_kb = InlineKeyboardMarkup(inline_keyboard=[[inline_btn]])
 
-    await message.answer(text(m_text, sep='\n'), reply_markup=inline_kb, parse_mode=ParseMode.MARKDOWN_V2)
+    await message.answer(text(m_text, sep='\n'), reply_markup=inline_kb, parse_mode='MarkdownV2')

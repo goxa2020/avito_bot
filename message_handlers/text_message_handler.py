@@ -1,7 +1,5 @@
 from aiogram import types
 
-# noinspection PyProtectedMember
-from ad_utils.add_ad import ad_start
 from ad_utils.ads import send_user_ads
 from admin import my_admins_text, my_admins_kb, admin_menu_profile, show_ad, not_access, add_admin_text
 from datatypes import User
@@ -34,8 +32,6 @@ async def all_messages(message: types.Message):
                 return await show_ad(message.from_user.id)
             case "Мои объявления":
                 return await send_user_ads(message)
-            case "Добавить объявление":
-                return await ad_start(message)
             case 'Назад' | 'Отмена':
                 return await message.answer('Вы вернулись назад', reply_markup=mainMenu(message.from_user.id))
             case _:

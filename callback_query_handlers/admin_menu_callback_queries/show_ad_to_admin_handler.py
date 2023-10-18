@@ -13,40 +13,38 @@ async def show_ad_to_admin(callback_query: types.CallbackQuery):
     ads = session.query(Ad).filter(Ad.posted == False)
 
     ad_index = int(ad_index % ads.count())
-    ad = ads[ad_index]
+    ad: Ad = ads[ad_index]
 
     text = f"Объявление {ad_index + 1} из {ads.count()}\n" \
-           f"Имя: {ad.user_first_name}\n" \
+           f"Имя: {ad.owner.user_first_name}\n" \
            f"Название товара: {ad.product_name}\n" \
            f"Количество: {ad.amount}\n" \
            f"Цена: {ad.price}\n" \
            f"Город: {ad.town}\n" \
            f"Описание: {ad.description}\n"
 
-    inline_kb = InlineKeyboardMarkup()
-    inline_btn1 = InlineKeyboardButton('Отклонить', callback_data=f'deleteAd_{ad_index}')
-    inline_btn2 = InlineKeyboardButton('Опубликовать', callback_data=f'publishAd_{ad_index}')
+    inline_kb = InlineKeyboardMarkup(inline_keyboard=[])
+    inline_btn1 = InlineKeyboardButton(text='Отклонить', callback_data=f'deleteAd_{ad_index}')
+    inline_btn2 = InlineKeyboardButton(text='Опубликовать', callback_data=f'publishAd_{ad_index}')
 
     if ads.count() > 1:
-        inline_btn3 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showAd_{ad_index - 1}')
-        inline_btn4 = InlineKeyboardButton('Следующее объявление', callback_data=f'showAd_{ad_index + 1}')
-        inline_kb.row(inline_btn3, inline_btn4)
+        inline_btn3 = InlineKeyboardButton(text='Предыдущее объявление', callback_data=f'showAd_{ad_index - 1}')
+        inline_btn4 = InlineKeyboardButton(text='Следующее объявление', callback_data=f'showAd_{ad_index + 1}')
+        inline_kb.inline_keyboard.append([inline_btn3, inline_btn4])
 
-    inline_kb.row(inline_btn1, inline_btn2)
+    inline_kb.inline_keyboard.append([inline_btn1, inline_btn2])
 
     if ad.picture_id:
-        photo = types.InputMediaPhoto(ad.picture_id, caption=text)
+        photo = types.InputMediaPhoto(media=ad.picture_id, caption=text)
 
         return await bot.edit_message_media(chat_id=callback_query.from_user.id,
                                             message_id=callback_query.message.message_id,
                                             reply_markup=inline_kb,
                                             media=photo)
 
-    photo = types.InputMediaPhoto(no_photo_id, caption=text)
+    photo = types.InputMediaPhoto(media=no_photo_id, caption=text)
 
     return await bot.edit_message_media(chat_id=callback_query.from_user.id,
                                         message_id=callback_query.message.message_id,
                                         reply_markup=inline_kb,
                                         media=photo)
-
-

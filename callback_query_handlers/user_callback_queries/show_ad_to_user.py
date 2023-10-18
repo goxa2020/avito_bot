@@ -26,22 +26,22 @@ async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None
            f"Опубликовано: {'Да' if ad.posted else 'Нет'}\n" \
            f"{'Закреплено: Да' if ad.is_pinned else ''}"
 
-    inline_kb = InlineKeyboardMarkup(row_width=2)
+    inline_kb = InlineKeyboardMarkup(inline_keyboard=[])
 
     if ads.count() > 1:
-        inline_btn1 = InlineKeyboardButton('Предыдущее объявление', callback_data=f'showUsersAd_{ad_index - 1}_0')
-        inline_btn2 = InlineKeyboardButton('Следующее объявление', callback_data=f'showUsersAd_{ad_index + 1}_0')
-        inline_kb.add(inline_btn1, inline_btn2)
+        inline_btn1 = InlineKeyboardButton(text='Предыдущее объявление', callback_data=f'showUsersAd_{ad_index - 1}_0')
+        inline_btn2 = InlineKeyboardButton(text='Следующее объявление', callback_data=f'showUsersAd_{ad_index + 1}_0')
+        inline_kb.inline_keyboard.append([inline_btn1, inline_btn2])
 
-    inline_btn3 = InlineKeyboardButton('Удалить', callback_data=f'deleteUsersAd_{ad_index}')
-    inline_kb.insert(inline_btn3)
+    inline_btn3 = InlineKeyboardButton(text='Удалить', callback_data=f'deleteUsersAd_{ad_index}')
+    inline_kb.inline_keyboard.append([inline_btn3])
 
     if ad.posted:
-        inline_btn4 = InlineKeyboardButton('Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad.post_id}')
-        inline_kb.insert(inline_btn4)
+        inline_btn4 = InlineKeyboardButton(text='Перейти', url=f'https://t.me/{chanel_name[1::]}/{ad.post_id}')
+        inline_kb.inline_keyboard[1].append(inline_btn4)
         if not ad.is_pinned:
-            inline_btn5 = InlineKeyboardButton('Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
-            inline_kb.insert(inline_btn5)
+            inline_btn5 = InlineKeyboardButton(text='Закрепить на канале на месяц', callback_data=f'pinAd_{ad_index}')
+            inline_kb.inline_keyboard.append([inline_btn5])
 
     if send_message:
         if ad.picture_id:
@@ -60,7 +60,7 @@ async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None
 
     if ad.picture_id:
         try:
-            media = InputMediaPhoto(ad.picture_id, caption=text)
+            media = InputMediaPhoto(media=ad.picture_id, caption=text)
             return await bot.edit_message_media(chat_id=user_id, media=media, message_id=message_id, reply_markup=inline_kb)
 
         except Exception as e:
@@ -68,7 +68,7 @@ async def show_ad_to_user(user_id, ad_index, send_message: bool, message_id=None
 
     try:
 
-        media = InputMediaPhoto(no_photo_id, caption=text)
+        media = InputMediaPhoto(media=no_photo_id, caption=text)
         return await bot.edit_message_media(chat_id=user_id, media=media, message_id=message_id, reply_markup=inline_kb)
 
     except Exception as e:

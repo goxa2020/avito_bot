@@ -24,7 +24,6 @@ async def start_message(message: types.Message):
                     logging.error(e)
                 else:
                     try:
-                        user = session.query(User).filter(User.user_id == message.from_user.id).first()
                         if user:
                             user.is_admin = True
                             user.admin_inviter_id = admin_invite
@@ -39,7 +38,8 @@ async def start_message(message: types.Message):
                         logging.info(
                             f'У нас новый админ, ID: {message.from_user.id}, имя: {message.from_user.first_name}')
                         await message.answer('Поздравляю, теперь вы админ', reply_markup=mainMenu(message.from_user.id))
-        elif session.query(User).filter(User.user_id == message.from_user.id).first():
+                        # TODO: Надёжность на высшем уровне, бро
+        elif user:
             await message.answer('Давно не виделись', reply_markup=mainMenu(message.from_user.id))
         else:
             await message.answer('Привет, приятно познакомиться\n'

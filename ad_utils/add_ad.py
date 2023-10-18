@@ -1,18 +1,17 @@
 # Это конечный автомат для добавления объявлений
-__all__ = ('Add_ad', 'name_entered', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
+__all__ = ('Add_ad', 'enter_product_name', 'product_name_chosen', 'product_amount_chosen', 'product_price_chosen',
            'town_chosen', 'picture_chosen', 'description_chosen', 'confirm_chosen', 'cancel')
 # import logging
 from datatypes import Ad, User
 from loader import session, bot
-from markups import mainMenu, cancel_kb
+from markups import mainMenu, cancel_kb, no_or_cancel_kb
 from aiogram import types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.fsm.context import FSMContext
+from aiogram.fsm.state import State, StatesGroup
 
 
 class Add_ad(StatesGroup):
-    waiting_for_name = State()
     waiting_for_product_name = State()
     waiting_for_product_amount = State()
     waiting_for_product_price = State()
@@ -26,73 +25,62 @@ ad_dict = {}
 
 
 async def cancel(message: types.Message, state: FSMContext):
-    await state.finish()
+    await state.set_state(state=None)
     await message.answer("Действие отменено", reply_markup=mainMenu(message.from_user.id))
 
 
-async def ad_start(message: types.Message):
-    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    btn1 = KeyboardButton(f'{message.from_user.first_name}')
-    btn2 = KeyboardButton('Отмена')
-    keyboard.add(btn1).add(btn2)
-    await message.answer("Введите своё имя:", reply_markup=keyboard)
-    await Add_ad.first()
-
-
-async def name_entered(message: types.Message):
+async def enter_product_name(message: types.Message, state: FSMContext):
     user_id = message.from_user.id
     user = session.query(User).filter(User.user_id == user_id).first()
     ad = Ad(owner=user, user_id=user.id)
     ad_dict[user_id] = ad
     await message.answer("Введите название товара:", reply_markup=cancel_kb())
-    await Add_ad.next()
+    await state.set_state(Add_ad.waiting_for_product_name)
 
 
-async def product_name_chosen(message: types.Message):
+async def product_name_chosen(message: types.Message, state: FSMContext):
     chat_id = message.from_user.id
     product_name = message.text
     ad = ad_dict[chat_id]
     ad.product_name = product_name
     await message.answer("Введите количество:", reply_markup=cancel_kb())
-    await Add_ad.next()
+    await state.set_state(Add_ad.waiting_for_product_amount)
 
 
-async def product_amount_chosen(message: types.Message):
+async def product_amount_chosen(message: types.Message, state: FSMContext):
     if message.text.isdigit():
         chat_id = message.from_user.id
         product_amount = message.text
         ad = ad_dict[chat_id]
         ad.amount = product_amount
         await message.answer("Введите цену в рублях:", reply_markup=cancel_kb())
-        await Add_ad.next()
+        await state.set_state(Add_ad.waiting_for_product_price)
     else:
         await message.answer('Это должно быть число', reply_markup=cancel_kb())
 
 
-async def product_price_chosen(message: types.Message):
+async def product_price_chosen(message: types.Message, state: FSMContext):
     if message.text.isdigit():
         chat_id = message.from_user.id
         product_price = message.text
         ad = ad_dict[chat_id]
         ad.price = product_price
         await message.answer("Введите свой город:", reply_markup=cancel_kb())
-        await Add_ad.next()
+        await state.set_state(Add_ad.waiting_for_town)
     else:
         await message.answer('Это должно быть число', reply_markup=cancel_kb())
 
 
-async def town_chosen(message: types.Message):
+async def town_chosen(message: types.Message, state: FSMContext):
     chat_id = message.from_user.id
     town = message.text
     ad = ad_dict[chat_id]
     ad.town = town
-    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    keyboard.add("Нет", "Отмена")
-    await message.answer('Теперь ты отправь фотогравию товора, если её нет, нажми "Нет"', reply_markup=keyboard)
-    await Add_ad.next()
+    await message.answer('Теперь ты отправь фотогравию товора, если её нет, нажми "Нет"', reply_markup=no_or_cancel_kb())
+    await state.set_state(Add_ad.waiting_for_picture)
 
 
-async def picture_chosen(message: types.Message):
+async def picture_chosen(message: types.Message, state: FSMContext):
     chat_id = message.from_user.id
     ad = ad_dict[chat_id]
     if message.content_type == 'photo':
@@ -100,29 +88,26 @@ async def picture_chosen(message: types.Message):
 
         await message.answer(f'Отлично, теперь отправь описание товара', reply_markup=cancel_kb())
 
-        await Add_ad.next()
+        await state.set_state(Add_ad.waiting_for_description)
     elif message.content_type == 'text':
         if message.text == "Нет":
             await message.answer(f'Окей, без фотки обойдёмся\n'
                                  f'Отправь описание товара', reply_markup=cancel_kb())
-            await Add_ad.next()
+            await state.set_state(Add_ad.waiting_for_description)
         else:
-            keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-            keyboard.add("Нет", "Отмена")
-            await message.answer("Мне нужна фотогравия", reply_markup=keyboard)
+            await message.answer("Мне нужна фотогравия", reply_markup=no_or_cancel_kb())
     else:
-        keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-        keyboard.add("Нет", "Отмена")
-        await message.answer("Мне нужна фотогравия", reply_markup=keyboard)
+        await message.answer("Мне нужна фотогравия", reply_markup=no_or_cancel_kb())
 
 
-async def description_chosen(message: types.Message):
+async def description_chosen(message: types.Message, state: FSMContext):
     chat_id = message.from_user.id
     ad = ad_dict[chat_id]
     ad.description = message.text
 
-    keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    keyboard.add('Подтвердить', 'Отмена')
+    btn1 = KeyboardButton(text='Подтвердить')
+    btn2 = KeyboardButton(text='Отмена')
+    keyboard = ReplyKeyboardMarkup(keyboard=[[btn1, btn2]], resize_keyboard=True, one_time_keyboard=True)
 
     await message.answer(f'Подтвердите пожалуйста\n'
                          f'Название товара: {ad.product_name}\n'
@@ -131,12 +116,12 @@ async def description_chosen(message: types.Message):
                          f'Город: {ad.town}\n'
                          f'Описание: {ad.description}', reply_markup=keyboard)
 
-    await Add_ad.next()
+    await state.set_state(Add_ad.waiting_for_confirm)
 
 
 async def confirm_chosen(message: types.Message, state: FSMContext):
     if message.text == 'Подтвердить':
-        await state.finish()
+        await state.set_state(state=None)
         chat_id = message.from_user.id
         ad = ad_dict[chat_id]
         session.add(ad)
